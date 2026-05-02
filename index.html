@@ -1,194 +1,414 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MUTEMA - Application Officielle</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000b18; color: white; }
-        
-        .header-bg { position: relative; overflow: hidden; background: linear-gradient(to bottom, #001a33, #003366); }
-        .heart { position: absolute; color: rgba(255, 255, 255, 0.2); animation: float 5s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); opacity: 0.2; } 50% { transform: translateY(-15px) scale(1.1); opacity: 0.5; } }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MUTEMA — Application Officielle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #f5c842;
+    --emerald: #10d98f;
+    --red: #ff4757;
+    --blue: #3a86ff;
+    --blue-deep: #004a99;
+    --bg: #050c14;
+    --bg2: #0a1622;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e8f0fe;
+    --text-dim: rgba(232,240,254,0.45);
+  }
 
-        #finance { background-image: linear-gradient(rgba(0,11,24,0.85), rgba(0,11,24,0.85)), url('https://images.unsplash.com/photo-1580519542036-c47de6196ba5?q=80&w=1000'); background-size: cover; background-position: center; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; overflow-x: hidden; }
 
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .nav-btn.active { color: #fbbf24; background: rgba(251, 191, 36, 0.1); border-radius: 12px; }
-        .month-badge { font-size: 7px; padding: 2px 4px; border-radius: 4px; font-weight: bold; margin-right: 2px; display: inline-block; }
-    </style>
+  /* ── HEADER ANIMÉ PROFESSIONNEL ── */
+  .hero {
+    position: relative;
+    background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--gold);
+  }
+
+  .logo-main {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 65px;
+    letter-spacing: 10px;
+    background: linear-gradient(135deg, #f5c842 0%, #fff7c2 50%, #c9a020 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    z-index: 10;
+  }
+
+  .slogan-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 10px;
+    z-index: 10;
+  }
+
+  /* Vagues Animées */
+  .waves { position: absolute; bottom: 0; width: 100%; height: 50px; }
+  .wave {
+    position: absolute; bottom: 0; left: 0; width: 200%; height: 100%;
+    background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png');
+    background-size: 50% 50px; animation: wave-move 12s linear infinite; opacity: 0.2;
+  }
+  .wave1 { animation-duration: 8s; opacity: 0.3; z-index: 5; }
+  @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Cœurs et Nuages */
+  .floating { position: absolute; color: rgba(255,255,255,0.15); animation: floatUp 6s infinite linear; z-index: 1; }
+  @keyframes floatUp {
+    0% { transform: translateY(150px) scale(0.5); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+  }
+
+  /* ── REPRISE DES ÉLÉMENTS DU CODE INITIAL ── */
+  .login-screen, .config-screen { position: fixed; inset: 0; background: var(--bg); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-box { background: var(--bg2); border: 1px solid var(--gold); border-radius: 28px; padding: 36px 28px; width: 100%; max-width: 380px; text-align: center; }
+  
+  .status-bar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 5px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 8px; font-family: 'JetBrains Mono', monospace; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); margin-right: 5px; }
+
+  nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: rgba(5,12,20,0.95); backdrop-filter: blur(15px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; }
+  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; transition: 0.3s; }
+  .nav-btn i { font-size: 20px; margin-bottom: 4px; }
+  .nav-btn.active { color: var(--gold); }
+
+  .tab { display: none; padding: 20px; max-width: 550px; margin: 0 auto; animation: slideUp 0.3s ease; }
+  .tab.active { display: block; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 15px; }
+  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+  
+  /* Badges */
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 8px; padding: 3px 8px; border-radius: 5px; margin: 2px; display: inline-block; text-transform: uppercase; }
+  .badge.noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .badge.epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+  .badge.solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
+
+  /* Mur */
+  .post-card { background: var(--glass); border-radius: 12px; padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--blue); }
+  .post-card.admin { border-left-color: var(--gold); background: rgba(245,200,66,0.05); }
+
+  input, select, textarea { width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); color: white; border-radius: 10px; margin-top: 5px; }
+  .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; text-transform: uppercase; }
+  .btn-gold { background: var(--gold); color: black; }
+  .btn-red { background: var(--red); color: white; }
+
+  .fine-result { background: rgba(255,71,87,0.1); border: 1px solid var(--red); border-radius: 14px; padding: 20px; text-align: center; margin-top: 15px; }
+  .fine-amount { font-family: 'Bebas Neue', sans-serif; font-size: 45px; color: var(--red); }
+</style>
 </head>
-<body class="pb-24">
+<body>
 
-    <header class="header-bg p-6 text-center sticky top-0 z-50 border-b border-white/5">
-        <i class="fas fa-heart heart" style="top:10%; left:10%; font-size:12px;"></i>
-        <i class="fas fa-heart heart" style="top:30%; right:10%; font-size:10px; animation-delay:2s;"></i>
-        <h1 class="text-4xl font-black italic text-yellow-500 tracking-tighter animate-pulse">MUTEMA</h1>
-        <p class="text-[9px] tracking-[0.4em] uppercase text-blue-300 font-bold mb-4">Discipline • Rigueur • Entraide</p>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-lg mx-auto">
-            <button onclick="alert('Président : Kamara')" class="glass p-2 text-[8px] font-bold uppercase">Kamara (Président)</button>
-            <button onclick="alert('Com : Devann & Carol')" class="glass p-2 text-[8px] font-bold uppercase">Devann & Carol (Com')</button>
-            <button onclick="alert('Trésorerie : Bermine')" class="glass p-2 text-[8px] font-bold uppercase border-emerald-500/30 text-emerald-400">Bermine (Trésorière)</button>
-            <button onclick="alert('Discipline : Caprisse Auderey')" class="glass p-2 text-[8px] font-bold uppercase border-red-500/30 text-red-400">Caprisse (Discipline)</button>
+<div class="config-screen" id="configScreen">
+  <div class="login-box">
+    <h2 style="color:var(--gold); font-family:'Bebas Neue'">CONFIG GITHUB</h2>
+    <input type="password" id="cfgToken" placeholder="Token GitHub (PAT)">
+    <input type="text" id="cfgGist" placeholder="ID du Gist (laisser vide si nouveau)">
+    <button class="btn btn-gold" onclick="setupGitHub()">Connecter le stockage</button>
+    <button class="btn" style="background:none; color:var(--text-dim)" onclick="useDemoMode()">Mode Test (Local)</button>
+  </div>
+</div>
+
+<div class="login-screen" id="loginScreen" style="display:none">
+  <div class="login-box">
+    <div class="logo-main" style="font-size:45px">MUTEMA</div>
+    <p style="font-size:10px; color:var(--gold); letter-spacing:2px; margin-bottom:20px">ACCÈS SÉCURISÉ</p>
+    <input type="password" id="loginInput" placeholder="CODE D'ACCÈS" maxlength="10">
+    <button class="btn btn-gold" onclick="doLogin()">Entrer</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div id="floaters"></div>
+  <div class="logo-main">MUTEMA</div>
+  <div class="slogan-main">Discipline • Rigueur • Entraide</div>
+  <div class="waves"><div class="wave wave1"></div></div>
+</header>
+
+<div class="status-bar">
+  <span><span class="status-dot"></span><span id="statusText">Initialisation...</span></span>
+  <span id="sessionName" style="color:var(--gold)">Connecté</span>
+</div>
+
+<main>
+  <div class="tab active" id="tab-finances">
+    <div class="sec-title"><i class="fas fa-wallet"></i> Cotisations</div>
+    <div id="financeList"></div>
+  </div>
+
+  <div class="tab" id="tab-mur">
+    <div class="sec-title"><i class="fas fa-comments"></i> Le Mur</div>
+    
+    <div class="card">
+      <textarea id="murMsg" placeholder="Une info pour le groupe ?"></textarea>
+      <button class="btn btn-gold" style="background:var(--blue-deep); color:white" onclick="postMur('public')">Publier sur le mur public</button>
+    </div>
+
+    <div id="adminPost" class="card" style="border: 1px solid var(--gold); display:none">
+      <p style="color:var(--gold); font-size:10px; font-weight:bold"><i class="fas fa-bullhorn"></i> ESPACE CHARGÉ DE COM'</p>
+      <textarea id="comMsg" placeholder="Message officiel de l'association..."></textarea>
+      <button class="btn btn-gold" onclick="postMur('com')">Publier Annonce Officielle</button>
+    </div>
+
+    <div id="murList" class="mt-3"></div>
+  </div>
+
+  <div class="tab" id="tab-discipline">
+    <div class="sec-title" style="color:var(--red)"><i class="fas fa-clock"></i> Calcul Amende</div>
+    <div class="card">
+      <label>Heure de réunion (ex: 14:00)</label>
+      <input type="time" id="meetingTime" value="14:00">
+      <label>Heure d'arrivée</label>
+      <input type="time" id="arrivalTime" value="14:31">
+      <button class="btn btn-red" onclick="calculateFine()">Calculer l'amende</button>
+      
+      <div id="fineBox" class="fine-result" style="display:none">
+        <div class="fine-amount" id="fineAmt">0 FCFA</div>
+        <p id="fineDetail" style="font-size:11px"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab" id="tab-admin">
+    <div class="sec-title"><i class="fas fa-tools"></i> Enregistrement</div>
+    <div class="card">
+      <label>Membre</label>
+      <select id="selMember"></select>
+      
+      <div style="display:flex; gap:10px">
+        <div style="flex:1">
+          <label>Mois</label>
+          <select id="selMonth">
+            <option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option>
+            <option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option>
+            <option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option>
+          </select>
         </div>
-    </header>
-
-    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg flex justify-around p-3 z-50 border-t border-white/10">
-        <button onclick="showTab('finance', this)" class="nav-btn active p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-wallet text-lg"></i><span>Finances</span></button>
-        <button onclick="showTab('mur', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-bullhorn text-lg text-blue-400"></i><span>Mur</span></button>
-        <button onclick="showTab('discipline', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-clock text-lg text-red-500"></i><span>Retard</span></button>
-        <button onclick="showTab('regles', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-gavel text-lg"></i><span>Règles</span></button>
-        <button onclick="authAdmin('admin')" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-key text-lg"></i><span>Gestion</span></button>
-    </nav>
-
-    <main class="p-4 max-w-lg mx-auto">
-
-        <div id="finance" class="tab-content active space-y-3 p-4 rounded-3xl">
-            <h2 class="text-xl font-bold text-yellow-500 italic border-l-4 border-yellow-500 pl-3 uppercase mb-4 tracking-tighter">Historique des Cotisations</h2>
-            <div id="finance-list" class="space-y-4"></div>
+        <div style="flex:1">
+          <label>Année</label>
+          <select id="selYear"><option>2025</option><option>2026</option></select>
         </div>
+      </div>
 
-        <div id="mur" class="tab-content space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-blue-400 uppercase italic">Le Mur de Com'</h2>
-                <button onclick="authAdmin('post')" class="bg-blue-600 text-[9px] font-black px-4 py-2 rounded-full shadow-lg">Publier</button>
-            </div>
-            <div id="mur-list" class="space-y-3"></div>
-        </div>
+      <label>Type de versement</label>
+      <select id="selType">
+        <option value="noire">Caisse Noire (1 000 FCFA)</option>
+        <option value="epargne">Épargne (1 000 FCFA)</option>
+        <option value="mariage">Solidarité : Mariage / Fiançaille</option>
+        <option value="deces">Solidarité : Décès / Santé</option>
+        <option value="naissance">Solidarité : Naissance</option>
+        <option value="maladie">Solidarité : Maladie</option>
+      </select>
+      <button class="btn btn-gold" onclick="savePayment()">Enregistrer & Synchroniser</button>
+    </div>
+  </div>
 
-        <div id="discipline" class="tab-content space-y-4 text-center">
-            <h2 class="text-xl font-bold text-red-500 uppercase italic">Calculateur de Sanction</h2>
-            <div class="glass p-6 space-y-4">
-                <input type="time" id="arrivalTime" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl font-bold text-center" value="14:31">
-                <button onclick="calculateFine()" class="w-full bg-red-600 py-3 rounded-xl font-black uppercase text-[10px]">Calculer l'amende</button>
-                <div id="fineBox" class="p-4 bg-red-900/20 rounded-xl hidden border border-red-500/30">
-                    <p id="fineAmount" class="text-4xl font-black text-red-500">0 FCFA</p>
-                </div>
-            </div>
-        </div>
+  <div class="tab" id="tab-regles">
+    <div class="sec-title"><i class="fas fa-book"></i> Règlement</div>
+    <div id="rulesList"></div>
+  </div>
+</main>
 
-        <div id="regles" class="tab-content">
-            <div class="glass p-6 text-[10px] space-y-4 leading-relaxed text-justify max-h-[65vh] overflow-y-auto">
-                <h2 class="text-lg font-bold text-yellow-500 text-center uppercase border-b border-white/10 pb-2">Règlement Intérieur</h2>
-                <p><b>Art 2 :</b> Réunion le 5 du mois à 14h00. Amende réception défaillante : 5 000 FCFA.</p>
-                <p><b>Art 3 :</b> Retard (14h30) : 500 FCFA. Doublé chaque 30 min suppl. Tenue : 2 000 FCFA.</p>
-                <p><b>Art 4 :</b> Caisse Noire : 1 000 FCFA. Épargne : 1 000 FCFA. Séance : 5 000 FCFA.</p>
-                <p><b>Art 5 :</b> Mariage : 10 000 FCFA. Décès/Santé : 5 000 FCFA. Naissance : 3 000 FCFA. Maladie : 500 FCFA.</p>
-            </div>
-        </div>
+<nav>
+  <button class="nav-btn active" onclick="showTab('finances', this)"><i class="fas fa-home"></i><span>Home</span></button>
+  <button class="nav-btn" onclick="showTab('mur', this)"><i class="fas fa-comments"></i><span>Mur</span></button>
+  <button class="nav-btn" onclick="showTab('discipline', this)"><i class="fas fa-gavel"></i><span>Retard</span></button>
+  <button class="nav-btn" id="navAdmin" onclick="showTab('admin', this)" style="display:none"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
+  <button class="nav-btn" onclick="showTab('regles', this)"><i class="fas fa-scroll"></i><span>Règles</span></button>
+</nav>
 
-        <div id="admin" class="tab-content">
-            <div class="glass p-5 border-2 border-red-500/30">
-                <h3 class="text-center font-bold text-red-500 uppercase mb-4 text-xs">Validation des Paiements</h3>
-                <div class="flex flex-col gap-2 mb-4">
-                    <select id="selMonth" class="bg-slate-900 border border-white/20 p-3 rounded-xl text-xs font-bold text-yellow-500 uppercase">
-                        <option value="Janvier">Janvier</option><option value="Février">Février</option><option value="Mars">Mars</option><option value="Avril">Avril</option><option value="Mai">Mai</option><option value="Juin">Juin</option><option value="Juillet">Juillet</option><option value="Août">Août</option><option value="Septembre">Septembre</option><option value="Octobre">Octobre</option><option value="Novembre">Novembre</option><option value="Décembre">Décembre</option>
-                    </select>
-                    <select id="selType" class="bg-emerald-900/30 border border-emerald-500/30 p-3 rounded-xl text-xs font-bold text-emerald-500 uppercase">
-                        <option value="noire">Caisse Noire</option><option value="epargne">Épargne</option><option value="mariage">Mariage</option><option value="deces">Décès</option><option value="naissance">Naissance</option><option value="maladie">Maladie</option>
-                    </select>
-                </div>
-                <div id="admin-rows" class="space-y-2"></div>
-                <button onclick="saveDB()" class="w-full mt-6 bg-green-600 py-4 rounded-xl font-bold uppercase text-[10px] tracking-widest">Enregistrer & Sync</button>
-            </div>
-        </div>
+<script>
+// --- DONNÉES ET CONFIG ---
+const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
+const TYPE_LABELS = { noire:"Caisse Noire", epargne:"Épargne", mariage:"Mariage/Fianç.", deces:"Décès/Santé", naissance:"Naissance", maladie:"Maladie" };
 
-    </main>
+let db = { payments: [], mur: [] };
+let currentUser = null;
+let GH_TOKEN = "", GH_GIST_ID = "", DEMO_MODE = false;
 
-    <script>
-        const CODE = "1604";
-        const members = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
+// --- HEADER ANIMATION ---
+function createFloaters() {
+  const container = document.getElementById('floaters');
+  const icons = ['fa-heart', 'fa-cloud'];
+  const icon = document.createElement('i');
+  icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} floating`;
+  icon.style.left = Math.random() * 100 + "vw";
+  icon.style.fontSize = (Math.random() * 15 + 10) + "px";
+  container.appendChild(icon);
+  setTimeout(() => icon.remove(), 6000);
+}
+setInterval(createFloaters, 1000);
 
-        let db = JSON.parse(localStorage.getItem('mutema_v6_db')) || members.map(n => ({
-            n, noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: []
-        }));
+// --- NAVIGATION ET TABS ---
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  renderAll();
+}
 
-        let announcements = JSON.parse(localStorage.getItem('mutema_announcements')) || [
-            {msg: "Bienvenue sur l'application officielle MUTEMA.", com: "DIRECTION"}
-        ];
+// --- GITHUB SYNC (REPRISE DE TA LOGIQUE) ---
+async function ghSync(data) {
+  if (DEMO_MODE) { localStorage.setItem("mutema_local_db", JSON.stringify(data)); return true; }
+  try {
+    const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, {
+      method: "PATCH",
+      headers: { Authorization: `token ${GH_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ files: { "mutema_db.json": { content: JSON.stringify(data) } } })
+    });
+    return r.ok;
+  } catch(e) { return false; }
+}
 
-        function showTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(btn) btn.classList.add('active');
-            refresh();
-        }
+async function ghLoad() {
+  if (DEMO_MODE) return JSON.parse(localStorage.getItem("mutema_local_db") || '{"payments":[],"mur":[]}');
+  try {
+    const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, { headers: { Authorization: `token ${GH_TOKEN}` } });
+    const data = await r.json();
+    return JSON.parse(data.files["mutema_db.json"].content);
+  } catch(e) { return {payments:[], mur:[]}; }
+}
 
-        function authAdmin(type) {
-            if(prompt("Code Chargé de Communication :") === CODE) {
-                if(type === 'post') {
-                    let m = prompt("Contenu de l'annonce :");
-                    if(m) { announcements.unshift({msg: m, com: "COM'"}); localStorage.setItem('mutema_announcements', JSON.stringify(announcements)); refresh(); }
-                } else showTab('admin');
-            } else alert("Accès refusé.");
-        }
+// --- AUTH ---
+function doLogin() {
+  const code = document.getElementById('loginInput').value;
+  if (code === "1604") {
+    currentUser = "Admin COM";
+    document.getElementById('navAdmin').style.display = "flex";
+    document.getElementById('adminPost').style.display = "block";
+  } else if (code.length >= 4) {
+    currentUser = "Membre";
+  } else {
+    alert("Code invalide"); return;
+  }
+  document.getElementById('loginScreen').style.display = "none";
+  document.getElementById('sessionName').textContent = currentUser;
+  loadInitialData();
+}
 
-        function calculateFine() {
-            const t = document.getElementById('arrivalTime').value;
-            const total = parseInt(t.split(':')[0]) * 60 + parseInt(t.split(':')[1]);
-            const limit = 14 * 60 + 30;
-            if(total <= limit) return alert("Ponctuel !");
-            let fine = Math.ceil((total - limit) / 30) * 500;
-            document.getElementById('fineAmount').innerText = fine + " FCFA";
-            document.getElementById('fineBox').classList.remove('hidden');
-        }
+// --- LOGIQUE FINANCES ---
+function savePayment() {
+  const p = {
+    member: document.getElementById('selMember').value,
+    type: document.getElementById('selType').value,
+    month: document.getElementById('selMonth').value,
+    year: document.getElementById('selYear').value,
+    date: new Date().toLocaleDateString()
+  };
+  db.payments.unshift(p);
+  ghSync(db).then(() => { alert("Enregistré !"); renderAll(); });
+}
 
-        function refresh() {
-            const fV = document.getElementById('finance-list');
-            const aR = document.getElementById('admin-rows');
-            const mL = document.getElementById('mur-list');
-            const m = document.getElementById('selMonth').value;
-            const ty = document.getElementById('selType').value;
-            
-            fV.innerHTML = ''; aR.innerHTML = ''; mL.innerHTML = '';
+function renderFinances() {
+  const el = document.getElementById('financeList');
+  el.innerHTML = "";
+  MEMBERS.forEach(m => {
+    const userPays = db.payments.filter(p => p.member === m);
+    let badges = userPays.map(p => `<span class="badge ${p.type === 'noire' || p.type === 'epargne' ? p.type : 'solidarite'}">${p.month.substring(0,3)} - ${TYPE_LABELS[p.type]}</span>`).join("");
+    el.innerHTML += `<div class="card"><div style="font-weight:bold; color:var(--gold)">${m}</div><div class="mt-2">${badges || '<span style="font-size:10px; opacity:0.5">Aucun versement</span>'}</div></div>`;
+  });
+}
 
-            // Mur d'annonces
-            announcements.forEach(a => {
-                mL.innerHTML += `<div class="glass p-4 border-l-4 border-blue-500 italic text-sm">${a.msg}<p class="text-right text-[8px] mt-2 font-black text-blue-400 uppercase">- ${a.com}</p></div>`;
-            });
+// --- MUR ---
+function postMur(type) {
+  const msg = document.getElementById(type === 'public' ? 'murMsg' : 'comMsg').value;
+  if (!msg) return;
+  db.mur.unshift({ type, text: msg, author: type === 'com' ? "COM'" : "Membre", date: new Date().toLocaleString() });
+  ghSync(db).then(() => { 
+    document.getElementById(type === 'public' ? 'murMsg' : 'comMsg').value = "";
+    renderMur();
+  });
+}
 
-            // Finances & Admin
-            db.forEach((p, i) => {
-                const badge = (list, color) => list.map(x => `<span class="month-badge ${color}">${x}</span>`).join('');
-                
-                fV.innerHTML += `<div class="glass p-4 border-l-2 border-yellow-500">
-                    <p class="font-black text-[10px] uppercase text-yellow-500 mb-2">${p.n}</p>
-                    <div class="space-y-2">
-                        <div class="flex flex-wrap items-center"><span class="text-[7px] text-gray-500 mr-2 uppercase">Caisse Noire:</span>${badge(p.noire, 'bg-yellow-500 text-black')}</div>
-                        <div class="flex flex-wrap items-center"><span class="text-[7px] text-gray-500 mr-2 uppercase">Épargne:</span>${badge(p.epargne, 'bg-emerald-500 text-white')}</div>
-                        <div class="flex flex-wrap items-center"><span class="text-[7px] text-gray-500 mr-2 uppercase">Solidarité:</span>${badge(p.mariage, 'bg-blue-500 text-white')}${badge(p.deces, 'bg-red-500 text-white')}${badge(p.naissance, 'bg-purple-500 text-white')}${badge(p.maladie, 'bg-pink-500 text-white')}</div>
-                    </div>
-                </div>`;
+function renderMur() {
+  const el = document.getElementById('murList');
+  el.innerHTML = db.mur.map(m => `
+    <div class="post-card ${m.type === 'com' ? 'admin' : ''}">
+      <div style="font-size:9px; color:var(--gold); font-weight:bold">${m.author} • ${m.date}</div>
+      <div style="margin-top:5px; font-size:13px">${m.text}</div>
+    </div>
+  `).join("");
+}
 
-                aR.innerHTML += `<div class="bg-black/40 p-2 rounded-xl flex justify-between items-center text-[10px]">
-                    <span class="font-bold">${p.n}</span>
-                    <button onclick="toggleP(${i}, '${ty}')" class="px-4 py-1 border rounded font-black ${p[ty].includes(m) ? 'bg-yellow-500 text-black border-yellow-400' : 'border-white/10 text-white/30'}">VALIDER</button>
-                </div>`;
-            });
-        }
+// --- CALCULATEUR AMENDE (IDENTIQUE AU TON CODE) ---
+function calculateFine() {
+  const arr = document.getElementById('arrivalTime').value;
+  const meet = document.getElementById('meetingTime').value;
+  const toMin = t => parseInt(t.split(":")[0])*60 + parseInt(t.split(":")[1]);
+  const diff = toMin(arr) - (toMin(meet) + 30); // Tolérance 30min
+  
+  const box = document.getElementById('fineBox');
+  box.style.display = "block";
+  if (diff <= 0) {
+    document.getElementById('fineAmt').textContent = "0 FCFA";
+    document.getElementById('fineAmt').style.color = "var(--emerald)";
+    document.getElementById('fineDetail').textContent = "À l'heure !";
+  } else {
+    const tranches = Math.ceil(diff / 30);
+    let fine = 0, current = 500;
+    for(let i=0; i<tranches; i++) { fine += current; current *= 2; }
+    document.getElementById('fineAmt').textContent = fine.toLocaleString() + " FCFA";
+    document.getElementById('fineAmt').style.color = "var(--red)";
+    document.getElementById('fineDetail').textContent = tranches + " tranche(s) de retard.";
+  }
+}
 
-        function toggleP(idx, ty) {
-            const m = document.getElementById('selMonth').value;
-            db[idx][ty].includes(m) ? db[idx][ty] = db[idx][ty].filter(x => x !== m) : db[idx][ty].push(m);
-            refresh();
-        }
+// --- SETUP INITIAL ---
+async function loadInitialData() {
+  document.getElementById('statusText').textContent = "Synchronisation...";
+  db = await ghLoad();
+  document.getElementById('statusText').textContent = "À jour ✓";
+  renderAll();
+}
 
-        function saveDB() {
-            localStorage.setItem('mutema_v6_db', JSON.stringify(db));
-            alert("Base synchronisée avec succès !");
-            showTab('finance');
-        }
+function renderAll() {
+  renderFinances();
+  renderMur();
+}
 
-        window.onload = refresh;
-    </script>
+function setupGitHub() {
+  GH_TOKEN = document.getElementById('cfgToken').value;
+  GH_GIST_ID = document.getElementById('cfgGist').value;
+  if (!GH_TOKEN) return alert("Token requis");
+  localStorage.setItem("mutema_gh_token", GH_TOKEN);
+  localStorage.setItem("mutema_gh_gist", GH_GIST_ID);
+  document.getElementById('configScreen').style.display = "none";
+  document.getElementById('loginScreen').style.display = "flex";
+}
+
+function useDemoMode() { DEMO_MODE = true; document.getElementById('configScreen').style.display = "none"; document.getElementById('loginScreen').style.display = "flex"; }
+
+// Init select members
+const sel = document.getElementById('selMember');
+MEMBERS.forEach(m => sel.innerHTML += `<option>${m}</option>`);
+
+// Auto load if token exists
+if (localStorage.getItem("mutema_gh_token")) {
+  GH_TOKEN = localStorage.getItem("mutema_gh_token");
+  GH_GIST_ID = localStorage.getItem("mutema_gh_gist");
+  document.getElementById('configScreen').style.display = "none";
+  document.getElementById('loginScreen').style.display = "flex";
+}
+</script>
 </body>
 </html>
