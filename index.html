@@ -3,328 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — Application Officielle</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>MUTEMA — 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root {
-    --gold: #f5c842;
-    --emerald: #10d98f;
-    --red: #ff4757;
-    --blue: #3a86ff;
-    --blue-deep: #004a99;
-    --bg: #050c14;
-    --bg2: #0a1622;
-    --glass: rgba(255,255,255,0.04);
-    --border: rgba(255,255,255,0.08);
-    --text: #e8f0fe;
-    --text-dim: rgba(232,240,254,0.45);
+    --gold: #f5c842; --emerald: #10d98f; --red: #ff4757; --blue: #3a86ff;
+    --blue-deep: #004a99; --bg: #050c14; --bg2: #0a1622;
+    --text: #e8f0fe; --text-dim: rgba(232,240,254,0.45);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 100px; overflow-x: hidden; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 110px; }
 
-  /* ── HEADER ANIMÉ ── */
+  /* ── HEADER ── */
   .hero {
-    position: relative;
-    background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    overflow: hidden;
-    border-bottom: 1px solid var(--gold);
+    position: relative; background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
+    height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden; border-bottom: 1px solid var(--gold);
   }
-
-  .logo-main {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 60px;
-    letter-spacing: 8px;
-    background: linear-gradient(135deg, #f5c842 0%, #fff7c2 50%, #c9a020 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1;
-    z-index: 10;
-  }
-
-  .slogan-main {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-top: 8px;
-    z-index: 10;
-  }
-
-  .waves { position: absolute; bottom: 0; width: 100%; height: 40px; }
-  .wave {
-    position: absolute; bottom: 0; left: 0; width: 200%; height: 100%;
-    background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png');
-    background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2;
-  }
+  .logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 55px; letter-spacing: 6px; background: linear-gradient(135deg, #f5c842, #fff7c2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; z-index: 10; }
+  .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; }
   @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-  .floating { position: absolute; color: rgba(255,255,255,0.1); animation: floatUp 5s infinite linear; z-index: 1; }
-  @keyframes floatUp { 0% { transform: translateY(120px); opacity: 0; } 50% { opacity: 0.4; } 100% { transform: translateY(-80px); opacity: 0; } }
-
-  /* ── NAVIGATION ── */
-  nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: rgba(5,12,20,0.98); backdrop-filter: blur(15px); border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
-  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 8px; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-weight: bold; }
-  .nav-btn i { font-size: 18px; margin-bottom: 5px; }
+  /* ── NAV ── */
+  nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #050c14; border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
+  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; }
+  .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
-  /* ── CONTENU ── */
-  .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.4s ease; }
+  /* ── TABS ── */
+  .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
-  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
+  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
 
-  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 15px; margin-bottom: 12px; }
-  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--glass); padding-bottom: 5px; }
+  /* ── BADGES PRÉCIS ── */
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; padding: 3px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-weight: bold; }
+  .badge-noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .badge-epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+  .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
+  .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
 
-  /* ── TABLES/LISTES ── */
-  .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; padding: 2px 6px; border-radius: 4px; margin: 2px; display: inline-block; }
-  .badge.noire { background: rgba(245,200,66,0.1); color: var(--gold); border: 1px solid var(--gold); }
-  .badge.epargne { background: rgba(16,217,143,0.1); color: var(--emerald); border: 1px solid var(--emerald); }
-  .badge.solidarite { background: rgba(58,134,255,0.1); color: var(--blue); border: 1px solid var(--blue); }
+  /* ── MESSAGES ── */
+  .msg-bubble { background: #1a2a3a; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px; border-left: 3px solid var(--blue); }
+  .project-card { background: linear-gradient(45deg, #0a1622, #112233); border-left: 4px solid var(--emerald); padding: 15px; border-radius: 10px; margin-bottom: 10px; }
 
-  .post-card { background: var(--glass); border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--gold); }
-  .msg-bubble { background: #162535; border-radius: 15px 15px 15px 0; padding: 10px; margin-bottom: 10px; font-size: 13px; max-width: 85%; }
-
-  /* ── FORMULAIRES ── */
-  input, select, textarea { width: 100%; padding: 10px; background: var(--bg); border: 1px solid var(--border); color: white; border-radius: 8px; margin-top: 5px; font-size: 13px; }
-  .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 11px; }
+  /* ── MODAL ── */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+  .modal.active { display: flex; }
+  .modal-box { background: var(--bg2); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); width: 280px; text-align: center; }
+  
+  input, select, textarea { width: 100%; padding: 10px; background: #050c14; border: 1px solid #333; color: white; border-radius: 5px; margin-top: 8px; }
+  .btn { width: 100%; padding: 12px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 10px; }
   .btn-gold { background: var(--gold); color: black; }
-  .btn-blue { background: var(--blue-deep); color: white; }
-  .btn-red { background: var(--red); color: white; }
-
-  footer { text-align: center; padding: 20px; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
-
-  /* ── MODAL SÉCURITÉ ── */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
-  .modal-overlay.active { display: flex; }
-  .modal-box { background: var(--bg2); padding: 25px; border-radius: 20px; border: 1px solid var(--gold); width: 85%; max-width: 300px; text-align: center; }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div id="floaters"></div>
   <div class="logo-main">MUTEMA</div>
-  <div class="slogan-main">Discipline • Rigueur • Entraide</div>
-  <div class="waves"><div class="wave"></div></div>
+  <div style="font-size:8px; color:var(--gold); letter-spacing:3px; z-index:10">RIGUEUR • DISCIPLINE • ENTRAIDE</div>
+  <div class="wave"></div>
 </header>
 
 <main>
   <div class="tab active" id="tab-home">
-    <div class="sec-title"><i class="fas fa-university"></i> État des Cotisations</div>
+    <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations</div>
     <div id="financeList"></div>
   </div>
 
+  <div class="tab" id="tab-projets">
+    <div class="sec-title"><i class="fas fa-tasks"></i> Projets de l'Association</div>
+    <div id="projectList"></div>
+    <button class="btn btn-gold" onclick="openSec('projet')"><i class="fas fa-plus"></i> Nouveau Projet (COM/PRESIDENT)</button>
+  </div>
+
   <div class="tab" id="tab-messages">
-    <div class="sec-title"><i class="fas fa-paper-plane"></i> Discussion Libre</div>
+    <div class="sec-title"><i class="fas fa-comments"></i> Discussion Libre</div>
     <div class="card">
-      <textarea id="freeMsg" placeholder="Écrire un message à tous les membres..."></textarea>
-      <button class="btn btn-blue" onclick="postMessage('free')">Envoyer</button>
+      <textarea id="freeInput" placeholder="Message aux membres..."></textarea>
+      <button class="btn btn-gold" style="background:var(--blue); color:white" onclick="postFree()">Envoyer</button>
     </div>
-    <div id="freeMsgList"></div>
+    <div id="freeList"></div>
   </div>
 
   <div class="tab" id="tab-mur">
     <div class="sec-title"><i class="fas fa-bullhorn"></i> Mur Officiel</div>
     <div id="murList"></div>
-    <button class="btn btn-gold" onclick="promptSecurity('mur')"><i class="fas fa-pen"></i> Publier une annonce (COM')</button>
+    <button class="btn btn-gold" onclick="openSec('mur')">Publier Annonce (COM)</button>
   </div>
 
   <div class="tab" id="tab-retard">
-    <div class="sec-title" style="color:var(--red)"><i class="fas fa-clock"></i> Calculateur de Retard</div>
+    <div class="sec-title" style="color:var(--red)"><i class="fas fa-clock"></i> Calcul Retard</div>
     <div class="card">
-      <label>Heure Réunion (14:00)</label>
-      <input type="time" id="meetT" value="14:00">
-      <label>Heure Arrivée</label>
-      <input type="time" id="arrT" value="14:31">
-      <button class="btn btn-red" onclick="runFineCalc()">Calculer Sanction</button>
-      <div id="fineResult" style="display:none; margin-top:15px; border-top:1px solid var(--red); padding-top:10px; text-align:center">
-        <h1 id="fAmt" style="color:var(--red); font-family:'Bebas Neue'">0 FCFA</h1>
-        <p id="fDesc" style="font-size:10px"></p>
+      <input type="time" id="tA" value="14:31">
+      <button class="btn btn-red" onclick="calcF()">Calculer</button>
+      <div id="fR" style="display:none; text-align:center; margin-top:15px">
+        <h2 id="fAmount" style="color:var(--red)">0 FCFA</h2>
       </div>
     </div>
   </div>
 
-  <div class="tab" id="tab-regles">
-    <div class="sec-title"><i class="fas fa-scroll"></i> Règlement Intérieur</div>
-    <div class="card" style="font-size:12px; line-height:1.6; color:var(--text-dim)">
-      <p><b>Art 1.</b> La ponctualité est de rigueur.</p>
-      <p><b>Art 2.</b> Cotisation mensuelle : 1.000 FCFA (Caisse Noire) + 1.000 FCFA (Épargne).</p>
-      <p><b>Art 3.</b> Absences non justifiées : 5.000 FCFA d'amende.</p>
-      <hr style="margin:10px 0; opacity:0.1">
-      <p><i>Le non-respect du règlement entraîne des sanctions disciplinaires.</i></p>
-    </div>
-  </div>
-
   <div class="tab" id="tab-admin">
-    <div class="sec-title"><i class="fas fa-user-shield"></i> Administration</div>
-    <div id="adminPanel">
-        </div>
+    <div class="sec-title"><i class="fas fa-key"></i> Administration</div>
+    <div id="adminArea"></div>
   </div>
 </main>
 
-<footer>
-  <p>© 2026 ASSOCIATION MUTEMA</p>
-  <p style="font-size:7px; opacity:0.3; margin-top:5px">Rigueur • Discipline • Succès</p>
-</footer>
-
 <nav>
   <button class="nav-btn active" onclick="showTab('home', this)"><i class="fas fa-home"></i><span>Home</span></button>
-  <button class="nav-btn" onclick="showTab('messages', this)"><i class="fas fa-comments"></i><span>Message</span></button>
+  <button class="nav-btn" onclick="showTab('projets', this)"><i class="fas fa-project-diagram"></i><span>Projet</span></button>
+  <button class="nav-btn" onclick="showTab('messages', this)"><i class="fas fa-comment-dots"></i><span>Message</span></button>
   <button class="nav-btn" onclick="showTab('mur', this)"><i class="fas fa-bullhorn"></i><span>Mur</span></button>
-  <button class="nav-btn" onclick="showTab('retard', this)"><i class="fas fa-history"></i><span>Retard</span></button>
-  <button class="nav-btn" onclick="showTab('regles', this)"><i class="fas fa-book"></i><span>Règlement</span></button>
-  <button class="nav-btn" onclick="promptSecurity('admin', this)"><i class="fas fa-key"></i><span>Gestion</span></button>
+  <button class="nav-btn" onclick="openSec('admin', this)"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
 </nav>
 
-<div class="modal-overlay" id="secModal">
+<footer style="text-align:center; padding:20px; font-size:10px; opacity:0.5">
+  © 2026 ASSOCIATION MUTEMA
+</footer>
+
+<div class="modal" id="secModal">
   <div class="modal-box">
-    <h3 style="color:var(--gold); margin-bottom:15px">CODE REQUIS</h3>
-    <input type="password" id="secInput" placeholder="Entrez le code COM">
-    <button class="btn btn-gold" onclick="checkSecurity()">Valider</button>
-    <button class="btn" style="background:none; color:white" onclick="closeSecurity()">Annuler</button>
+    <h4 style="color:var(--gold)">CODE D'ACCÈS</h4>
+    <input type="password" id="secKey" placeholder="Entrez votre code">
+    <button class="btn btn-gold" onclick="checkKey()">Valider</button>
+    <button class="btn" style="background:none; color:white" onclick="closeSec()">Annuler</button>
   </div>
 </div>
 
 <script>
-// --- CONFIG & DB ---
 const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
-let db = { payments: [], mur: [], messages: [] };
-let pendingAction = null;
+let db = { payments: [], mur: [], messages: [], projets: [] };
+let curAction = null;
 
-// --- ANIMATION HEADER ---
-function spawnFloater() {
-  const f = document.createElement('i');
-  f.className = `fas fa-heart floating`;
-  f.style.left = Math.random() * 100 + "vw";
-  document.getElementById('floaters').appendChild(f);
-  setTimeout(() => f.remove(), 5000);
-}
-setInterval(spawnFloater, 1500);
-
-// --- NAVIGATION ---
 function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn) btn.classList.add('active');
   renderAll();
 }
 
-// --- SÉCURITÉ ---
-function promptSecurity(action, btn) {
-  pendingAction = { action, btn };
-  document.getElementById('secModal').classList.add('active');
-}
+function openSec(act, btn) { curAction = {act, btn}; document.getElementById('secModal').classList.add('active'); }
+function closeSec() { document.getElementById('secModal').classList.remove('active'); }
 
-function closeSecurity() { document.getElementById('secModal').classList.remove('active'); }
+function checkKey() {
+  const k = document.getElementById('secKey').value;
+  const isCom = (k === "1604");
+  const isPres = (k === "2026");
 
-function checkSecurity() {
-  const code = document.getElementById('secInput').value;
-  if(code === "1604") {
-    closeSecurity();
-    if(pendingAction.action === 'admin') {
-      unlockAdmin(pendingAction.btn);
-    } else if(pendingAction.action === 'mur') {
-      openMurEditor();
-    }
+  if((curAction.act === 'admin' && isCom) || (curAction.act === 'admin' && isPres)) {
+    unlockAdmin(); closeSec();
+  } else if(curAction.act === 'mur' && isCom) {
+    postToMur(); closeSec();
+  } else if(curAction.act === 'projet' && (isCom || isPres)) {
+    postToProjet(); closeSec();
   } else {
-    alert("Accès refusé.");
+    alert("Code incorrect pour cette action.");
   }
 }
 
-function unlockAdmin(btn) {
-  document.getElementById('adminPanel').innerHTML = `
+function unlockAdmin() {
+  document.getElementById('adminArea').innerHTML = `
     <div class="card">
-      <label>Membre</label>
-      <select id="admMem">${MEMBERS.map(m=>`<option>${m}</option>`).join('')}</select>
-      <div style="display:flex; gap:10px">
-        <select id="admM">${["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"].map(m=>`<option>${m}</option>`).join('')}</select>
-        <select id="admY"><option>2025</option><option>2026</option></select>
-      </div>
-      <select id="admT">
+      <select id="aM">${MEMBERS.map(m=>`<option>${m}</option>`).join('')}</select>
+      <select id="aType">
         <option value="noire">Caisse Noire</option>
         <option value="epargne">Épargne</option>
-        <option value="solidarite">Solidarité (Mariage/Décès...)</option>
+        <option value="deces">Décès</option>
+        <option value="solidarite">Mariage/Autres</option>
       </select>
-      <button class="btn btn-gold" onclick="saveAdm()">Enregistrer le paiement</button>
-    </div>
-  `;
-  showTab('admin', btn);
+      <select id="aMonth"><option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option><option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option><option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option></select>
+      <button class="btn btn-gold" onclick="addPay()">Enregistrer</button>
+    </div>`;
+  showTab('admin', curAction.btn);
 }
 
-function openMurEditor() {
-  const msg = prompt("Entrez votre annonce officielle :");
-  if(msg) {
-    db.mur.unshift({ text: msg, date: new Date().toLocaleString() });
-    saveDB();
-    renderAll();
-  }
-}
-
-// --- LOGIQUE ---
-function saveAdm() {
+function addPay() {
   db.payments.unshift({
-    name: document.getElementById('admMem').value,
-    month: document.getElementById('admM').value,
-    year: document.getElementById('admY').value,
-    type: document.getElementById('admT').value
+    name: document.getElementById('aM').value,
+    type: document.getElementById('aType').value,
+    month: document.getElementById('aMonth').value
   });
-  saveDB();
-  alert("Paiement validé !");
-  renderAll();
+  save(); alert("Enregistré !"); renderAll();
 }
 
-function postMessage(type) {
-  const val = document.getElementById('freeMsg').value;
-  if(!val) return;
-  db.messages.unshift({ text: val, time: new Date().toLocaleTimeString() });
-  document.getElementById('freeMsg').value = "";
-  saveDB();
-  renderAll();
+function postToMur() {
+  const t = prompt("Votre annonce officielle :");
+  if(t) { db.mur.unshift({text: t, date: new Date().toLocaleDateString()}); save(); renderAll(); }
 }
 
-function runFineCalc() {
-  const t = (v) => parseInt(v.split(":")[0])*60 + parseInt(v.split(":")[1]);
-  const diff = t(document.getElementById('arrT').value) - (t(document.getElementById('meetT').value) + 30);
-  const res = document.getElementById('fineResult');
-  res.style.display = "block";
-  if(diff <= 0) {
-    document.getElementById('fAmt').textContent = "0 FCFA";
-    document.getElementById('fAmt').style.color = "var(--emerald)";
-  } else {
-    let fine = 0, cur = 500;
-    for(let i=0; i<Math.ceil(diff/30); i++){ fine += cur; cur *= 2; }
-    document.getElementById('fAmt').textContent = fine.toLocaleString() + " FCFA";
-    document.getElementById('fAmt').style.color = "var(--red)";
+function postToProjet() {
+  const t = prompt("Nom du projet :");
+  const d = prompt("Description rapide :");
+  if(t) { db.projets.unshift({title: t, desc: d}); save(); renderAll(); }
+}
+
+function postFree() {
+  const v = document.getElementById('freeInput').value;
+  if(v) { db.messages.unshift({text: v, time: new Date().toLocaleTimeString()}); document.getElementById('freeInput').value=""; save(); renderAll(); }
+}
+
+function calcF() {
+  const t = document.getElementById('tA').value;
+  const min = parseInt(t.split(":")[0])*60 + parseInt(t.split(":")[1]);
+  const diff = min - 870; // 14:30
+  document.getElementById('fR').style.display = "block";
+  if(diff <= 0) { document.getElementById('fAmount').textContent = "0 FCFA"; }
+  else {
+    let f = 0, c = 500;
+    for(let i=0; i<Math.ceil(diff/30); i++) { f+=c; c*=2; }
+    document.getElementById('fAmount').textContent = f.toLocaleString() + " FCFA";
   }
 }
 
-// --- RENDER ---
 function renderAll() {
-  // Finances
+  // Finances différenciées
   document.getElementById('financeList').innerHTML = MEMBERS.map(m => {
     const p = db.payments.filter(x => x.name === m);
-    return `<div class="card"><b>${m}</b><div class="mt-2">${p.map(v => `<span class="badge ${v.type}">${v.month.substring(0,3)}</span>`).join('')}</div></div>`;
+    return `<div class="card"><b>${m}</b><div class="mt-2">
+      ${p.map(v => `<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}
+    </div></div>`;
   }).join('');
-  // Mur
-  document.getElementById('murList').innerHTML = db.mur.map(m => `<div class="post-card"><small>${m.date}</small><p>${m.text}</p></div>`).join('');
+  // Projets
+  document.getElementById('projectList').innerHTML = db.projets.map(p => `<div class="project-card"><h4>${p.title}</h4><p style="font-size:11px; opacity:0.7">${p.desc}</p></div>`).join('');
   // Messages
-  document.getElementById('freeMsgList').innerHTML = db.messages.map(m => `<div class="msg-bubble"><small style="color:var(--gold)">Membre • ${m.time}</small><br>${m.text}</div>`).join('');
+  document.getElementById('freeList').innerHTML = db.messages.map(m => `<div class="msg-bubble">${m.text} <br><small style="opacity:0.4">${m.time}</small></div>`).join('');
+  // Mur
+  document.getElementById('murList').innerHTML = db.mur.map(m => `<div class="card" style="border-left:3px solid var(--gold)"><small>${m.date}</small><p>${m.text}</p></div>`).join('');
 }
 
-function saveDB() { localStorage.setItem("mutema_db_2026", JSON.stringify(db)); }
+function save() { localStorage.setItem("mutema_db_v3", JSON.stringify(db)); }
 window.onload = () => {
-  const s = localStorage.getItem("mutema_db_2026");
+  const s = localStorage.getItem("mutema_db_v3");
   if(s) db = JSON.parse(s);
   renderAll();
 };
