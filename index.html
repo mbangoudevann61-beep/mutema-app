@@ -1,354 +1,414 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MUTEMA — Espace Membre</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Bebas+Neue&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --blue-main: #004a99;
-            --blue-dark: #002d5f;
-            --green-logo: #28a745;
-            --gold: #f5c842;
-            --text-light: #f8f9fa;
-            --bg-dark: #020b16;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MUTEMA — Application Officielle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --gold: #f5c842;
+    --emerald: #10d98f;
+    --red: #ff4757;
+    --blue: #3a86ff;
+    --blue-deep: #004a99;
+    --bg: #050c14;
+    --bg2: #0a1622;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e8f0fe;
+    --text-dim: rgba(232,240,254,0.45);
+  }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: var(--bg-dark); 
-            color: var(--text-light);
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; overflow-x: hidden; }
 
-        /* --- HEADER ANIMÉ (VAGUES & CŒURS) --- */
-        .hero {
-            position: relative;
-            background: linear-gradient(180deg, var(--blue-main) 0%, var(--blue-dark) 100%);
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-        }
+  /* ── HEADER ANIMÉ PROFESSIONNEL ── */
+  .hero {
+    position: relative;
+    background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--gold);
+  }
 
-        .logo-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 50px;
-            letter-spacing: 5px;
-            z-index: 10;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+  .logo-main {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 65px;
+    letter-spacing: 10px;
+    background: linear-gradient(135deg, #f5c842 0%, #fff7c2 50%, #c9a020 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    z-index: 10;
+  }
 
-        .slogan {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            z-index: 10;
-            color: var(--gold);
-        }
+  .slogan-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 10px;
+    z-index: 10;
+  }
 
-        /* Animation Vagues */
-        .waves {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-        }
+  /* Vagues Animées */
+  .waves { position: absolute; bottom: 0; width: 100%; height: 50px; }
+  .wave {
+    position: absolute; bottom: 0; left: 0; width: 200%; height: 100%;
+    background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png');
+    background-size: 50% 50px; animation: wave-move 12s linear infinite; opacity: 0.2;
+  }
+  .wave1 { animation-duration: 8s; opacity: 0.3; z-index: 5; }
+  @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png');
-            background-size: 50% 60px;
-            animation: wave-move 10s linear infinite;
-            opacity: 0.3;
-        }
-        .wave1 { animation-duration: 7s; opacity: 0.5; z-index: 5; }
-        .wave2 { animation-duration: 12s; opacity: 0.2; z-index: 3; bottom: 5px; }
+  /* Cœurs et Nuages */
+  .floating { position: absolute; color: rgba(255,255,255,0.15); animation: floatUp 6s infinite linear; z-index: 1; }
+  @keyframes floatUp {
+    0% { transform: translateY(150px) scale(0.5); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+  }
 
-        @keyframes wave-move {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+  /* ── REPRISE DES ÉLÉMENTS DU CODE INITIAL ── */
+  .login-screen, .config-screen { position: fixed; inset: 0; background: var(--bg); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-box { background: var(--bg2); border: 1px solid var(--gold); border-radius: 28px; padding: 36px 28px; width: 100%; max-width: 380px; text-align: center; }
+  
+  .status-bar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 5px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 8px; font-family: 'JetBrains Mono', monospace; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); margin-right: 5px; }
 
-        /* Animation Cœurs & Nuages */
-        .floating-heart {
-            position: absolute;
-            color: rgba(255,255,255,0.2);
-            animation: float Up 5s infinite ease-in;
-            z-index: 1;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(200px) scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
-        }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: rgba(5,12,20,0.95); backdrop-filter: blur(15px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; }
+  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 9px; cursor: pointer; transition: 0.3s; }
+  .nav-btn i { font-size: 20px; margin-bottom: 4px; }
+  .nav-btn.active { color: var(--gold); }
 
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed;
-            bottom: 0; width: 100%;
-            background: rgba(2, 11, 22, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid var(--glass);
-            z-index: 1000;
-        }
-        .nav-item {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: 0.3s;
-        }
-        .nav-item.active { color: var(--gold); }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+  .tab { display: none; padding: 20px; max-width: 550px; margin: 0 auto; animation: slideUp 0.3s ease; }
+  .tab.active { display: block; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
 
-        /* --- CARDS & CONTENU --- */
-        .container { padding: 20px; max-width: 500px; margin: auto; }
-        .card {
-            background: var(--glass);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 15px; }
+  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+  
+  /* Badges */
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 8px; padding: 3px 8px; border-radius: 5px; margin: 2px; display: inline-block; text-transform: uppercase; }
+  .badge.noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .badge.epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+  .badge.solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  /* Mur */
+  .post-card { background: var(--glass); border-radius: 12px; padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--blue); }
+  .post-card.admin { border-left-color: var(--gold); background: rgba(245,200,66,0.05); }
 
-        /* --- FORMULAIRES --- */
-        select, input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border-radius: 8px;
-            border: 1px solid var(--glass);
-            background: rgba(0,0,0,0.2);
-            color: white;
-            font-family: inherit;
-        }
-        .btn {
-            background: var(--blue-main);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            width: 100%;
-            font-weight: bold;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .btn-com { background: var(--green-logo); }
+  input, select, textarea { width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); color: white; border-radius: 10px; margin-top: 5px; }
+  .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; text-transform: uppercase; }
+  .btn-gold { background: var(--gold); color: black; }
+  .btn-red { background: var(--red); color: white; }
 
-        /* --- MUR DE MESSAGES --- */
-        .msg-bubble {
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--blue-main);
-        }
-        .msg-bubble.admin { border-left-color: var(--gold); background: rgba(245, 200, 66, 0.05); }
-        .msg-meta { font-size: 9px; color: var(--gold); margin-bottom: 5px; font-family: 'JetBrains Mono'; }
-    </style>
+  .fine-result { background: rgba(255,71,87,0.1); border: 1px solid var(--red); border-radius: 14px; padding: 20px; text-align: center; margin-top: 15px; }
+  .fine-amount { font-family: 'Bebas Neue', sans-serif; font-size: 45px; color: var(--red); }
+</style>
 </head>
 <body>
 
-<header class="hero">
-    <div id="hearts-container"></div>
-    <div class="logo-text">MUTEMA</div>
-    <div class="slogan">Discipline • Rigueur • Entraide</div>
-    <div class="waves">
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-    </div>
-</header>
-
-<div class="container">
-    
-    <div id="tab-finances" class="tab-content active">
-        <h2 style="margin-bottom:15px; color:var(--gold)">💰 État des Cotisations</h2>
-        <div class="card">
-            <label>Sélectionner le Membre</label>
-            <select id="memberSelect">
-                <option>Kamara</option>
-                <option>Bermine</option>
-                <option>Caprisse Auderey</option>
-                <option>Devann</option>
-                <option>Carol Charonne</option>
-                <option>Achille</option>
-            </select>
-            <div style="display: flex; gap: 10px;">
-                <select id="monthSelect">
-                    <option value="Janvier">Janvier</option>
-                    <option value="Février">Février</option>
-                    <option value="Mars">Mars</option>
-                    <option value="Avril">Avril</option>
-                    <option value="Mai">Mai</option>
-                    <option value="Juin">Juin</option>
-                    <option value="Juillet">Juillet</option>
-                    <option value="Août">Août</option>
-                    <option value="Septembre">Septembre</option>
-                    <option value="Octobre">Octobre</option>
-                    <option value="Novembre">Novembre</option>
-                    <option value="Décembre">Décembre</option>
-                </select>
-                <select id="yearSelect">
-                    <option>2025</option><option>2026</option>
-                </select>
-            </div>
-            <select id="typeSelect">
-                <option value="noire">Caisse Noire (1000 FCFA)</option>
-                <option value="epargne">Épargne (1000 FCFA)</option>
-                <option value="sante">Santé/Décès (5000 FCFA)</option>
-            </select>
-            <button class="btn" onclick="savePayment()">Enregistrer le versement</button>
-        </div>
-        <div id="paymentHistory"></div>
-    </div>
-
-    <div id="tab-mur" class="tab-content">
-        <h2 style="margin-bottom:15px; color:var(--blue-main)">📢 Mur de l'Association</h2>
-        
-        <div class="card">
-            <p style="font-size: 11px; margin-bottom: 5px;">Publier un message (Public)</p>
-            <textarea id="publicMsg" placeholder="Votre message ici..."></textarea>
-            <button class="btn" onclick="postMessage('public')">Publier sur le mur public</button>
-        </div>
-
-        <div id="adminPostArea" class="card" style="border: 1px solid var(--gold);">
-            <p style="font-size: 11px; color: var(--gold);">📢 Publication Officielle (COM' uniquement)</p>
-            <input type="password" id="comCode" placeholder="Code d'accès COM'">
-            <textarea id="comMsg" placeholder="Annonce officielle..."></textarea>
-            <button class="btn btn-com" onclick="postMessage('com')">Publier l'annonce</button>
-        </div>
-
-        <div id="wallDisplay"></div>
-    </div>
-
+<div class="config-screen" id="configScreen">
+  <div class="login-box">
+    <h2 style="color:var(--gold); font-family:'Bebas Neue'">CONFIG GITHUB</h2>
+    <input type="password" id="cfgToken" placeholder="Token GitHub (PAT)">
+    <input type="text" id="cfgGist" placeholder="ID du Gist (laisser vide si nouveau)">
+    <button class="btn btn-gold" onclick="setupGitHub()">Connecter le stockage</button>
+    <button class="btn" style="background:none; color:var(--text-dim)" onclick="useDemoMode()">Mode Test (Local)</button>
+  </div>
 </div>
 
+<div class="login-screen" id="loginScreen" style="display:none">
+  <div class="login-box">
+    <div class="logo-main" style="font-size:45px">MUTEMA</div>
+    <p style="font-size:10px; color:var(--gold); letter-spacing:2px; margin-bottom:20px">ACCÈS SÉCURISÉ</p>
+    <input type="password" id="loginInput" placeholder="CODE D'ACCÈS" maxlength="10">
+    <button class="btn btn-gold" onclick="doLogin()">Entrer</button>
+  </div>
+</div>
+
+<header class="hero">
+  <div id="floaters"></div>
+  <div class="logo-main">MUTEMA</div>
+  <div class="slogan-main">Discipline • Rigueur • Entraide</div>
+  <div class="waves"><div class="wave wave1"></div></div>
+</header>
+
+<div class="status-bar">
+  <span><span class="status-dot"></span><span id="statusText">Initialisation...</span></span>
+  <span id="sessionName" style="color:var(--gold)">Connecté</span>
+</div>
+
+<main>
+  <div class="tab active" id="tab-finances">
+    <div class="sec-title"><i class="fas fa-wallet"></i> Cotisations</div>
+    <div id="financeList"></div>
+  </div>
+
+  <div class="tab" id="tab-mur">
+    <div class="sec-title"><i class="fas fa-comments"></i> Le Mur</div>
+    
+    <div class="card">
+      <textarea id="murMsg" placeholder="Une info pour le groupe ?"></textarea>
+      <button class="btn btn-gold" style="background:var(--blue-deep); color:white" onclick="postMur('public')">Publier sur le mur public</button>
+    </div>
+
+    <div id="adminPost" class="card" style="border: 1px solid var(--gold); display:none">
+      <p style="color:var(--gold); font-size:10px; font-weight:bold"><i class="fas fa-bullhorn"></i> ESPACE CHARGÉ DE COM'</p>
+      <textarea id="comMsg" placeholder="Message officiel de l'association..."></textarea>
+      <button class="btn btn-gold" onclick="postMur('com')">Publier Annonce Officielle</button>
+    </div>
+
+    <div id="murList" class="mt-3"></div>
+  </div>
+
+  <div class="tab" id="tab-discipline">
+    <div class="sec-title" style="color:var(--red)"><i class="fas fa-clock"></i> Calcul Amende</div>
+    <div class="card">
+      <label>Heure de réunion (ex: 14:00)</label>
+      <input type="time" id="meetingTime" value="14:00">
+      <label>Heure d'arrivée</label>
+      <input type="time" id="arrivalTime" value="14:31">
+      <button class="btn btn-red" onclick="calculateFine()">Calculer l'amende</button>
+      
+      <div id="fineBox" class="fine-result" style="display:none">
+        <div class="fine-amount" id="fineAmt">0 FCFA</div>
+        <p id="fineDetail" style="font-size:11px"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab" id="tab-admin">
+    <div class="sec-title"><i class="fas fa-tools"></i> Enregistrement</div>
+    <div class="card">
+      <label>Membre</label>
+      <select id="selMember"></select>
+      
+      <div style="display:flex; gap:10px">
+        <div style="flex:1">
+          <label>Mois</label>
+          <select id="selMonth">
+            <option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option>
+            <option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option>
+            <option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option>
+          </select>
+        </div>
+        <div style="flex:1">
+          <label>Année</label>
+          <select id="selYear"><option>2025</option><option>2026</option></select>
+        </div>
+      </div>
+
+      <label>Type de versement</label>
+      <select id="selType">
+        <option value="noire">Caisse Noire (1 000 FCFA)</option>
+        <option value="epargne">Épargne (1 000 FCFA)</option>
+        <option value="mariage">Solidarité : Mariage / Fiançaille</option>
+        <option value="deces">Solidarité : Décès / Santé</option>
+        <option value="naissance">Solidarité : Naissance</option>
+        <option value="maladie">Solidarité : Maladie</option>
+      </select>
+      <button class="btn btn-gold" onclick="savePayment()">Enregistrer & Synchroniser</button>
+    </div>
+  </div>
+
+  <div class="tab" id="tab-regles">
+    <div class="sec-title"><i class="fas fa-book"></i> Règlement</div>
+    <div id="rulesList"></div>
+  </div>
+</main>
+
 <nav>
-    <a href="#" class="nav-item active" onclick="switchTab('finances', this)">
-        <i class="fas fa-hand-holding-usd"></i><span>Finances</span>
-    </a>
-    <a href="#" class="nav-item" onclick="switchTab('mur', this)">
-        <i class="fas fa-comments"></i><span>Murs</span>
-    </a>
-    <a href="#" class="nav-item" onclick="alert('Règlement disponible en PDF')">
-        <i class="fas fa-book"></i><span>Règles</span>
-    </a>
+  <button class="nav-btn active" onclick="showTab('finances', this)"><i class="fas fa-home"></i><span>Home</span></button>
+  <button class="nav-btn" onclick="showTab('mur', this)"><i class="fas fa-comments"></i><span>Mur</span></button>
+  <button class="nav-btn" onclick="showTab('discipline', this)"><i class="fas fa-gavel"></i><span>Retard</span></button>
+  <button class="nav-btn" id="navAdmin" onclick="showTab('admin', this)" style="display:none"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
+  <button class="nav-btn" onclick="showTab('regles', this)"><i class="fas fa-scroll"></i><span>Règles</span></button>
 </nav>
 
 <script>
-    // --- CONFIGURATION & DONNÉES ---
-    let db = { payments: [], messages: [] };
+// --- DONNÉES ET CONFIG ---
+const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
+const TYPE_LABELS = { noire:"Caisse Noire", epargne:"Épargne", mariage:"Mariage/Fianç.", deces:"Décès/Santé", naissance:"Naissance", maladie:"Maladie" };
 
-    // --- ANIMATION CŒURS ---
-    function createHeart() {
-        const heart = document.createElement('i');
-        heart.className = 'fas fa-heart floating-heart';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        document.getElementById('hearts-container').appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-    }
-    setInterval(createHeart, 800);
+let db = { payments: [], mur: [] };
+let currentUser = null;
+let GH_TOKEN = "", GH_GIST_ID = "", DEMO_MODE = false;
 
-    // --- NAVIGATION ---
-    function switchTab(tabId, el) {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('tab-' + tabId).classList.add('active');
-        el.classList.add('active');
-    }
+// --- HEADER ANIMATION ---
+function createFloaters() {
+  const container = document.getElementById('floaters');
+  const icons = ['fa-heart', 'fa-cloud'];
+  const icon = document.createElement('i');
+  icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} floating`;
+  icon.style.left = Math.random() * 100 + "vw";
+  icon.style.fontSize = (Math.random() * 15 + 10) + "px";
+  container.appendChild(icon);
+  setTimeout(() => icon.remove(), 6000);
+}
+setInterval(createFloaters, 1000);
 
-    // --- LOGIQUE FINANCES ---
-    function savePayment() {
-        const payment = {
-            member: document.getElementById('memberSelect').value,
-            month: document.getElementById('monthSelect').value,
-            year: document.getElementById('yearSelect').value,
-            type: document.getElementById('typeSelect').value,
-            date: new Date().toLocaleString()
-        };
-        db.payments.unshift(payment);
-        renderPayments();
-        localStorage.setItem('mutema_data', JSON.stringify(db));
-        alert("Paiement enregistré !");
-    }
+// --- NAVIGATION ET TABS ---
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  renderAll();
+}
 
-    function renderPayments() {
-        const container = document.getElementById('paymentHistory');
-        container.innerHTML = db.payments.map(p => `
-            <div class="card" style="font-size:12px">
-                <b style="color:var(--gold)">${p.member}</b> - ${p.type.toUpperCase()}<br>
-                Période : ${p.month} ${p.year}<br>
-                <small style="opacity:0.5">Enregistré le : ${p.date}</small>
-            </div>
-        `).join('');
-    }
+// --- GITHUB SYNC (REPRISE DE TA LOGIQUE) ---
+async function ghSync(data) {
+  if (DEMO_MODE) { localStorage.setItem("mutema_local_db", JSON.stringify(data)); return true; }
+  try {
+    const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, {
+      method: "PATCH",
+      headers: { Authorization: `token ${GH_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ files: { "mutema_db.json": { content: JSON.stringify(data) } } })
+    });
+    return r.ok;
+  } catch(e) { return false; }
+}
 
-    // --- LOGIQUE MUR ---
-    function postMessage(type) {
-        const text = type === 'public' ? document.getElementById('publicMsg').value : document.getElementById('comMsg').value;
-        const code = document.getElementById('comCode').value;
+async function ghLoad() {
+  if (DEMO_MODE) return JSON.parse(localStorage.getItem("mutema_local_db") || '{"payments":[],"mur":[]}');
+  try {
+    const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, { headers: { Authorization: `token ${GH_TOKEN}` } });
+    const data = await r.json();
+    return JSON.parse(data.files["mutema_db.json"].content);
+  } catch(e) { return {payments:[], mur:[]}; }
+}
 
-        if(type === 'com' && code !== '1604') { // Exemple code COM
-            alert("Code incorrect !"); return;
-        }
+// --- AUTH ---
+function doLogin() {
+  const code = document.getElementById('loginInput').value;
+  if (code === "1604") {
+    currentUser = "Admin COM";
+    document.getElementById('navAdmin').style.display = "flex";
+    document.getElementById('adminPost').style.display = "block";
+  } else if (code.length >= 4) {
+    currentUser = "Membre";
+  } else {
+    alert("Code invalide"); return;
+  }
+  document.getElementById('loginScreen').style.display = "none";
+  document.getElementById('sessionName').textContent = currentUser;
+  loadInitialData();
+}
 
-        if(!text) return;
+// --- LOGIQUE FINANCES ---
+function savePayment() {
+  const p = {
+    member: document.getElementById('selMember').value,
+    type: document.getElementById('selType').value,
+    month: document.getElementById('selMonth').value,
+    year: document.getElementById('selYear').value,
+    date: new Date().toLocaleDateString()
+  };
+  db.payments.unshift(p);
+  ghSync(db).then(() => { alert("Enregistré !"); renderAll(); });
+}
 
-        const msg = {
-            type: type,
-            text: text,
-            author: type === 'com' ? "CHARGÉ COM" : "Membre",
-            time: new Date().toLocaleTimeString()
-        };
+function renderFinances() {
+  const el = document.getElementById('financeList');
+  el.innerHTML = "";
+  MEMBERS.forEach(m => {
+    const userPays = db.payments.filter(p => p.member === m);
+    let badges = userPays.map(p => `<span class="badge ${p.type === 'noire' || p.type === 'epargne' ? p.type : 'solidarite'}">${p.month.substring(0,3)} - ${TYPE_LABELS[p.type]}</span>`).join("");
+    el.innerHTML += `<div class="card"><div style="font-weight:bold; color:var(--gold)">${m}</div><div class="mt-2">${badges || '<span style="font-size:10px; opacity:0.5">Aucun versement</span>'}</div></div>`;
+  });
+}
 
-        db.messages.unshift(msg);
-        renderWall();
-        document.getElementById('publicMsg').value = '';
-        document.getElementById('comMsg').value = '';
-        localStorage.setItem('mutema_data', JSON.stringify(db));
-    }
+// --- MUR ---
+function postMur(type) {
+  const msg = document.getElementById(type === 'public' ? 'murMsg' : 'comMsg').value;
+  if (!msg) return;
+  db.mur.unshift({ type, text: msg, author: type === 'com' ? "COM'" : "Membre", date: new Date().toLocaleString() });
+  ghSync(db).then(() => { 
+    document.getElementById(type === 'public' ? 'murMsg' : 'comMsg').value = "";
+    renderMur();
+  });
+}
 
-    function renderWall() {
-        const container = document.getElementById('wallDisplay');
-        container.innerHTML = db.messages.map(m => `
-            <div class="msg-bubble ${m.type === 'com' ? 'admin' : ''}">
-                <div class="msg-meta">${m.author} • ${m.time}</div>
-                <div style="font-size:13px">${m.text}</div>
-            </div>
-        `).join('');
-    }
+function renderMur() {
+  const el = document.getElementById('murList');
+  el.innerHTML = db.mur.map(m => `
+    <div class="post-card ${m.type === 'com' ? 'admin' : ''}">
+      <div style="font-size:9px; color:var(--gold); font-weight:bold">${m.author} • ${m.date}</div>
+      <div style="margin-top:5px; font-size:13px">${m.text}</div>
+    </div>
+  `).join("");
+}
 
-    // --- INITIALISATION ---
-    window.onload = () => {
-        const saved = localStorage.getItem('mutema_data');
-        if(saved) db = JSON.parse(saved);
-        renderPayments();
-        renderWall();
-    };
+// --- CALCULATEUR AMENDE (IDENTIQUE AU TON CODE) ---
+function calculateFine() {
+  const arr = document.getElementById('arrivalTime').value;
+  const meet = document.getElementById('meetingTime').value;
+  const toMin = t => parseInt(t.split(":")[0])*60 + parseInt(t.split(":")[1]);
+  const diff = toMin(arr) - (toMin(meet) + 30); // Tolérance 30min
+  
+  const box = document.getElementById('fineBox');
+  box.style.display = "block";
+  if (diff <= 0) {
+    document.getElementById('fineAmt').textContent = "0 FCFA";
+    document.getElementById('fineAmt').style.color = "var(--emerald)";
+    document.getElementById('fineDetail').textContent = "À l'heure !";
+  } else {
+    const tranches = Math.ceil(diff / 30);
+    let fine = 0, current = 500;
+    for(let i=0; i<tranches; i++) { fine += current; current *= 2; }
+    document.getElementById('fineAmt').textContent = fine.toLocaleString() + " FCFA";
+    document.getElementById('fineAmt').style.color = "var(--red)";
+    document.getElementById('fineDetail').textContent = tranches + " tranche(s) de retard.";
+  }
+}
+
+// --- SETUP INITIAL ---
+async function loadInitialData() {
+  document.getElementById('statusText').textContent = "Synchronisation...";
+  db = await ghLoad();
+  document.getElementById('statusText').textContent = "À jour ✓";
+  renderAll();
+}
+
+function renderAll() {
+  renderFinances();
+  renderMur();
+}
+
+function setupGitHub() {
+  GH_TOKEN = document.getElementById('cfgToken').value;
+  GH_GIST_ID = document.getElementById('cfgGist').value;
+  if (!GH_TOKEN) return alert("Token requis");
+  localStorage.setItem("mutema_gh_token", GH_TOKEN);
+  localStorage.setItem("mutema_gh_gist", GH_GIST_ID);
+  document.getElementById('configScreen').style.display = "none";
+  document.getElementById('loginScreen').style.display = "flex";
+}
+
+function useDemoMode() { DEMO_MODE = true; document.getElementById('configScreen').style.display = "none"; document.getElementById('loginScreen').style.display = "flex"; }
+
+// Init select members
+const sel = document.getElementById('selMember');
+MEMBERS.forEach(m => sel.innerHTML += `<option>${m}</option>`);
+
+// Auto load if token exists
+if (localStorage.getItem("mutema_gh_token")) {
+  GH_TOKEN = localStorage.getItem("mutema_gh_token");
+  GH_GIST_ID = localStorage.getItem("mutema_gh_gist");
+  document.getElementById('configScreen').style.display = "none";
+  document.getElementById('loginScreen').style.display = "flex";
+}
 </script>
-
 </body>
 </html>
