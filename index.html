@@ -3,149 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUTEMA - Espace Officiel</title>
+    <title>MUTEMA - Gestion Annuelle</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: linear-gradient(135deg, #001a33 0%, #003366 100%);
-            min-height: 100vh;
-            color: white;
-        }
-
-        /* TITRE VIVANT */
-        .title-live {
-            animation: pulse-glow 3s ease-in-out infinite;
-            background: linear-gradient(to right, #fbbf24, #ffffff, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-        }
-        @keyframes pulse-glow {
-            0% { background-position: 0% center; transform: scale(1); }
-            50% { background-position: 100% center; transform: scale(1.05); }
-            100% { background-position: 0% center; transform: scale(1); }
-        }
-
-        /* EFFET TRANSLUCIDE (GLASSMORPHISM) */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000b18; color: white; min-height: 100vh; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .tab-content.active { display: block; animation: fadeInUp 0.4s ease forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .nav-active { color: #fbbf24 !important; border-bottom: 2px solid #fbbf24; }
+        .month-chip { font-size: 8px; padding: 2px 5px; border-radius: 4px; margin: 1px; display: inline-block; }
     </style>
 </head>
 <body class="pb-24">
 
-    <!-- HEADER DYNAMIQUE -->
-    <header class="p-8 text-center glass-panel sticky top-0 z-50">
-        <h1 class="text-5xl font-black italic tracking-tighter title-live">MUTEMA</h1>
-        <p class="text-[10px] tracking-[0.5em] uppercase text-blue-300 mt-2">Discipline • Rigueur • Entraide</p>
-        
-        <!-- BUREAU DU HAUT -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-8 max-w-4xl mx-auto">
-            <div class="glass-panel p-3 rounded-2xl">
-                <p class="text-[8px] uppercase text-blue-300 font-bold">Président</p>
-                <p class="text-[10px] font-bold">KAMARA</p>
-            </div>
-            <div class="glass-panel p-3 rounded-2xl border-yellow-500/30">
-                <p class="text-[8px] uppercase text-yellow-400 font-bold">Communication</p>
-                <p class="text-[9px] font-bold">DEVANN & CAROL</p>
-            </div>
-            <div class="glass-panel p-3 rounded-2xl">
-                <p class="text-[8px] uppercase text-emerald-400 font-bold">Trésorière</p>
-                <p class="text-[10px] font-bold uppercase">Bermine</p>
-            </div>
-            <div class="glass-panel p-3 rounded-2xl">
-                <p class="text-[8px] uppercase text-red-400 font-bold tracking-tighter">Discipline</p>
-                <p class="text-[10px] font-bold uppercase">Caprisse Auderey</p>
-            </div>
-        </div>
+    <!-- HEADER VIVANT -->
+    <header class="pt-12 pb-6 px-6 text-center">
+        <h1 class="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-yellow-500">MUTEMA</h1>
+        <p class="text-[10px] tracking-[0.5em] uppercase text-blue-400 font-bold mt-2">Discipline • Rigueur • Entraide</p>
     </header>
 
     <!-- NAVIGATION -->
-    <nav class="flex justify-around bg-black/40 backdrop-blur-md p-4 text-[10px] font-bold uppercase tracking-widest sticky top-[180px] z-40">
+    <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 flex justify-around p-4 text-[9px] font-black uppercase tracking-widest overflow-x-auto">
         <button onclick="showTab('finance', this)" class="nav-btn nav-active">Finances</button>
-        <button onclick="showTab('mur', this)" class="nav-btn">Le Mur</button>
-        <button onclick="showTab('regles', this)" class="nav-btn">Règlement</button>
-        <button onclick="unlockAccess()" class="nav-btn text-red-400"><i class="fas fa-key"></i></button>
+        <button onclick="showTab('discipline', this)" class="nav-btn text-red-400">Discipline</button>
+        <button onclick="showTab('reglement', this)" class="nav-btn">Règlement</button>
+        <button onclick="authAdmin()" class="nav-btn text-white/50"><i class="fas fa-lock"></i></button>
     </nav>
 
-    <main class="container mx-auto p-6 max-w-2xl">
+    <main class="container mx-auto p-6 max-w-3xl">
 
-        <!-- SECTION FINANCES -->
+        <!-- SECTION FINANCES AVEC MOIS -->
         <div id="finance" class="tab-content active space-y-4">
-            <h2 class="text-xl font-black text-yellow-500 uppercase italic">État des Cotisations</h2>
-            <div id="list-finance" class="space-y-3"></div>
+            <h2 class="text-xl font-black text-yellow-500 italic border-l-4 border-yellow-500 pl-4 mb-6 uppercase">Historique des Versements</h2>
+            <div id="finance-display" class="space-y-3"></div>
         </div>
 
-        <!-- MUR DE COMMUNICATION SÉCURISÉ -->
-        <div id="mur" class="tab-content space-y-6">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-black text-blue-400 uppercase italic">Journal des Annonces</h2>
-                <button id="btn-post" class="hidden text-[10px] bg-yellow-500 text-black px-4 py-2 rounded-full font-bold uppercase" onclick="createPost()">Nouvelle Annonce</button>
-            </div>
-            <div id="annonces-container" class="space-y-4">
-                <div class="glass-panel p-6 rounded-[2rem] border-l-4 border-yellow-500">
-                    <p class="text-sm italic leading-relaxed">"La rigueur est le socle de notre unité. N'oubliez pas les pénalités de retard selon l'Art 3."</p>
-                    <p class="text-right text-[9px] mt-4 font-black uppercase text-yellow-500">- Pôle Communication</p>
+        <!-- SECTION DISCIPLINE (CALCULATEUR) -->
+        <div id="discipline" class="tab-content space-y-6">
+            <h2 class="text-xl font-black text-red-500 italic uppercase">Calculateur de Retard (Art. 3)</h2>
+            <div class="glass p-6 space-y-4">
+                <div>
+                    <label class="text-xs uppercase font-bold text-gray-400">Heure d'arrivée :</label>
+                    <input type="time" id="arrivalTime" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl mt-2" value="14:30">
+                </div>
+                <button onclick="calculateFine()" class="w-full bg-red-600 py-3 rounded-xl font-bold uppercase text-xs">Calculer l'Amende</button>
+                <div id="fineResult" class="text-center p-4 bg-red-900/20 rounded-xl hidden">
+                    <p class="text-xs uppercase">Montant à payer :</p>
+                    <p id="fineAmount" class="text-3xl font-black text-red-500">0 FCFA</p>
                 </div>
             </div>
         </div>
 
         <!-- RÈGLEMENT INTÉRIEUR -->
-        <div id="regles" class="tab-content">
-            <div class="glass-panel p-8 rounded-[2.5rem] border border-white/10">
-                <h2 class="text-2xl font-black text-white uppercase italic mb-8 border-b border-white/10 pb-4">Règlement Intérieur</h2>
-                <div class="text-[11px] space-y-6 opacity-80 leading-loose text-justify">
-                    <p><b class="text-yellow-500">Art 2 :</b> Réunions le 5 de chaque mois dès 14h00. Amende réception défaillante : 5 000 FCFA.</p>
-                    <p><b class="text-yellow-500">Art 3 :</b> Retard (14h30) : 500 FCFA. Doublé toutes les 30 min. Tenue officielle : 2 000 FCFA.</p>
-                    <p><b class="text-yellow-500">Art 4 :</b> Caisse Noire : 1 000 FCFA. Épargne : 1 000 FCFA. Collation : 5 000 FCFA.</p>
-                    <p><b class="text-yellow-500">Art 5 :</b> Mariage : 10 000 FCFA. Décès : 5 000 FCFA. Naissance : 3 000 FCFA.</p>
-                </div>
+        <div id="reglement" class="tab-content">
+            <div class="glass p-8 text-[11px] space-y-4 leading-relaxed">
+                <h2 class="text-2xl font-black text-yellow-500 uppercase italic mb-4 border-b border-white/10 pb-2 text-center">Règlement Intérieur</h2>
+                <p><b>Art 3 (Ponctualité) :</b> Retard après 14h30 : 500 FCFA. Pénalité doublée (500 F additionnels) chaque 30 min de retard supplémentaire.</p>
+                <p><b>Art 4 (Cotisations) :</b> Caisse Noire : 1 000 FCFA/mois. Épargne : 1 000 FCFA/mois.</p>
             </div>
         </div>
 
-        <!-- GESTION COMM / TRÉSO (CACHÉ PAR DÉFAUT) -->
+        <!-- CONSOLE ADMIN (SÉCURISÉE) -->
         <div id="admin" class="tab-content">
-            <div class="glass-panel p-8 rounded-[2.5rem] border-2 border-red-500/50">
-                <h2 class="text-xl font-bold text-red-500 mb-8 uppercase tracking-widest italic">Console Communication & Trésorerie</h2>
-                <div id="admin-rows" class="space-y-4"></div>
-                <button onclick="finalize()" class="w-full mt-10 bg-emerald-600 py-5 rounded-3xl font-black uppercase tracking-widest shadow-2xl hover:bg-emerald-700 transition">Sauvegarder les Données</button>
+            <div class="glass p-6 border-2 border-red-500/30">
+                <h3 class="text-center font-bold text-red-500 uppercase mb-6">Validation des Mois</h3>
+                <select id="selectedMonth" class="w-full bg-slate-900 border border-white/20 p-3 rounded-xl mb-6 text-sm">
+                    <option value="Janvier">Janvier</option><option value="Février">Février</option>
+                    <option value="Mars">Mars</option><option value="Avril">Avril</option>
+                    <option value="Mai">Mai</option><option value="Juin">Juin</option>
+                    <option value="Juillet">Juillet</option><option value="Août">Août</option>
+                    <option value="Septembre">Septembre</option><option value="Octobre">Octobre</option>
+                    <option value="Novembre">Novembre</option><option value="Décembre">Décembre</option>
+                </select>
+                <div id="admin-list" class="space-y-3"></div>
+                <button onclick="saveAndSync()" class="w-full mt-8 bg-green-600 py-4 rounded-xl font-black uppercase text-xs shadow-xl">Enregistrer la séance</button>
             </div>
         </div>
 
     </main>
 
-    <footer class="text-center p-12 opacity-40 text-[10px] font-bold uppercase tracking-[0.5em]">
-        MUTEMA ASSOCIATION • 2026<br>
-        <span id="date-footer"></span>
+    <footer class="text-center p-12 opacity-30 text-[10px] font-black uppercase tracking-[0.5em]">
+        MUTEMA ASSOCIATION • <span id="currentDate"></span>
     </footer>
 
     <script>
-        const SECRECY = "1604"; // Ton code secret
-        let database = JSON.parse(localStorage.getItem('mutema_pro_v1')) || [
-            {n: "Kamara", noire: false, e: false, d: "-"},
-            {n: "Bermine", noire: false, e: false, d: "-"},
-            {n: "Caprisse Auderey", noire: false, e: false, d: "-"},
-            {n: "Devann", noire: false, e: false, d: "-"},
-            {n: "Carol Charonne", noire: false, e: false, d: "-"},
-            {n: "Achille", noire: false, e: false, d: "-"},
-            {n: "Syntiche Promesse", noire: false, e: false, d: "-"},
-            {n: "Aurnelia", noire: false, e: false, d: "-"},
-            {n: "Alicia Carolle", noire: false, e: false, d: "-"},
-            {n: "Carmela", noire: false, e: false, d: "-"},
-            {n: "Jolene", noire: false, e: false, d: "-"},
-            {n: "Éric Didier", noire: false, e: false, d: "-"}
+        const CODE = "1604";
+        const moisAnnee = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        
+        let db = JSON.parse(localStorage.getItem('mutema_v10_db')) || [
+            {n: "Kamara", noire: [], epargne: []},
+            {n: "Bermine", noire: [], epargne: []},
+            {n: "Caprisse Auderey", noire: [], epargne: []},
+            {n: "Devann", noire: [], epargne: []},
+            {n: "Carol Charonne", noire: [], epargne: []},
+            {n: "Achille", noire: [], epargne: []},
+            {n: "Syntiche Promesse", noire: [], epargne: []},
+            {n: "Aurnelia", noire: [], epargne: []},
+            {n: "Alicia Carolle", noire: [], epargne: []},
+            {n: "Carmela", noire: [], epargne: []},
+            {n: "Jolene", noire: [], epargne: []},
+            {n: "Éric Didier", noire: [], epargne: []}
         ];
 
         function showTab(id, btn) {
@@ -153,63 +113,83 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
             document.getElementById(id).classList.add('active');
             if(btn) btn.classList.add('nav-active');
-            refresh();
+            render();
         }
 
-        function unlockAccess() {
-            let p = prompt("Code Chargé de Communication :");
-            if(p === SECRECY) {
-                document.getElementById('btn-post').classList.remove('hidden');
-                showTab('admin');
-            } else alert("Accès réservé aux Chargés de Communication.");
+        function authAdmin() {
+            if(prompt("Code Chargé de Communication :") === CODE) showTab('admin');
         }
 
-        function refresh() {
-            const fView = document.getElementById('list-finance');
-            const aView = document.getElementById('admin-rows');
-            fView.innerHTML = ''; aView.innerHTML = '';
+        function render() {
+            const display = document.getElementById('finance-display');
+            const adminList = document.getElementById('admin-list');
+            const selMonth = document.getElementById('selectedMonth').value;
+            
+            display.innerHTML = ''; adminList.innerHTML = '';
 
-            database.forEach((m, i) => {
-                fView.innerHTML += `
-                    <div class="glass-panel p-5 rounded-3xl flex justify-between items-center border-l-4 ${m.noire && m.e ? 'border-emerald-500' : 'border-red-500'}">
-                        <div>
-                            <p class="font-bold text-xs uppercase">${m.n}</p>
-                            <p class="text-[8px] opacity-40 italic mt-1">Validé : ${m.d}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <span class="w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black ${m.noire ? 'bg-yellow-500 text-black' : 'bg-white/5 text-white/20'}">CN</span>
-                            <span class="w-8 h-8 rounded-xl flex items-center justify-center text-[10px] font-black ${m.e ? 'bg-emerald-500 text-black' : 'bg-white/5 text-white/20'}">EP</span>
+            db.forEach((m, i) => {
+                // Vue publique
+                let nMois = m.noire.map(mo => `<span class="month-chip bg-yellow-500 text-black">${mo}</span>`).join('');
+                let eMois = m.epargne.map(mo => `<span class="month-chip bg-green-500 text-black">${mo}</span>`).join('');
+                
+                display.innerHTML += `
+                    <div class="glass p-4 border-l-4 border-yellow-500">
+                        <p class="text-xs font-bold uppercase mb-2">${m.n}</p>
+                        <div class="space-y-1">
+                            <p class="text-[8px] text-gray-400 uppercase">Caisse Noire : ${nMois || '---'}</p>
+                            <p class="text-[8px] text-gray-400 uppercase">Épargne : ${eMois || '---'}</p>
                         </div>
                     </div>`;
 
-                aView.innerHTML += `
-                    <div class="bg-black/20 p-4 rounded-2xl flex justify-between items-center border border-white/5">
-                        <span class="text-[10px] font-bold uppercase tracking-tighter">${m.n}</span>
-                        <div class="flex gap-3">
-                            <button onclick="togglePay(${i}, 'noire')" class="w-10 h-10 rounded-xl border ${m.noire ? 'bg-yellow-500 border-yellow-400' : 'bg-white/5 border-white/10'}"><i class="fas fa-coins text-[10px]"></i></button>
-                            <button onclick="togglePay(${i}, 'e')" class="w-10 h-10 rounded-xl border ${m.e ? 'bg-emerald-500 border-emerald-400' : 'bg-white/5 border-white/10'}"><i class="fas fa-vault text-[10px]"></i></button>
+                // Vue Admin
+                adminList.innerHTML += `
+                    <div class="bg-black/40 p-3 rounded-xl flex justify-between items-center text-[10px]">
+                        <span>${m.n}</span>
+                        <div class="flex gap-2">
+                            <button onclick="togglePay(${i}, 'noire')" class="px-3 py-1 rounded border ${m.noire.includes(selMonth) ? 'bg-yellow-500 border-yellow-400 text-black' : 'border-white/10 text-white/40'}">NOIRE</button>
+                            <button onclick="togglePay(${i}, 'epargne')" class="px-3 py-1 rounded border ${m.epargne.includes(selMonth) ? 'bg-green-500 border-green-400 text-black' : 'border-white/10 text-white/40'}">EPARGNE</button>
                         </div>
                     </div>`;
             });
-            document.getElementById('date-footer').innerText = new Date().toLocaleDateString();
+            document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
         }
 
         function togglePay(idx, type) {
-            database[idx][type] = !database[idx][type];
-            if(database[idx][type]) {
-                const now = new Date();
-                database[idx].d = now.toLocaleDateString() + " " + now.getHours() + "h" + now.getMinutes();
+            const selMonth = document.getElementById('selectedMonth').value;
+            if (db[idx][type].includes(selMonth)) {
+                db[idx][type] = db[idx][type].filter(m => m !== selMonth);
+            } else {
+                db[idx][type].push(selMonth);
             }
-            refresh();
+            render();
         }
 
-        function finalize() {
-            localStorage.setItem('mutema_pro_v1', JSON.stringify(database));
-            alert("Base de données synchronisée !");
+        function calculateFine() {
+            const time = document.getElementById('arrivalTime').value;
+            const [hours, minutes] = time.split(':').map(Number);
+            const totalMinutes = hours * 60 + minutes;
+            const limitMinutes = 14 * 60 + 30; // 14h30
+
+            if (totalMinutes <= limitMinutes) {
+                alert("À l'heure ! Aucune amende.");
+                return;
+            }
+
+            let diff = totalMinutes - limitMinutes;
+            let slices = Math.ceil(diff / 30);
+            let fine = slices * 500;
+
+            document.getElementById('fineAmount').innerText = fine + " FCFA";
+            document.getElementById('fineResult').classList.remove('hidden');
+        }
+
+        function saveAndSync() {
+            localStorage.setItem('mutema_v10_db', JSON.stringify(db));
+            alert("Séance enregistrée !");
             showTab('finance');
         }
 
-        window.onload = refresh;
+        window.onload = render;
     </script>
 </body>
 </html>
