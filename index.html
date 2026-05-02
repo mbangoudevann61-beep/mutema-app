@@ -2,237 +2,269 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MUTEMA</title>
-
-<link rel="manifest" href="manifest.json">
-
-<script>
-if ('serviceWorker' in navigator') {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MUTEMA — Application Officielle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body {
-    background: linear-gradient(#001a33, #003366);
-    color: white;
-    font-family: sans-serif;
-}
+  :root {
+    --gold: #f5c842;
+    --gold-dim: #c9a020;
+    --emerald: #10d98f;
+    --red: #ff4757;
+    --blue: #3a86ff;
+    --purple: #a855f7;
+    --bg: #050c14;
+    --bg2: #0a1622;
+    --bg3: #0f1f30;
+    --glass: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #e8f0fe;
+    --text-dim: rgba(232,240,254,0.45);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(245,200,66,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(245,200,66,0.02) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; z-index: 0; }
 
-/* ❤️ COEURS */
-.heart {
-    position: absolute;
-    color: rgba(255,255,255,0.3);
-    animation: float 6s infinite ease-in-out;
-}
-@keyframes float {
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-20px);}
-}
+  /* ── LOGIN SCREEN ── */
+  .login-screen { position: fixed; inset: 0; background: var(--bg); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .login-box { background: var(--bg2); border: 1px solid rgba(245,200,66,0.18); border-radius: 28px; padding: 36px 28px; width: 100%; max-width: 380px; text-align: center; }
+  .login-logo { font-family: 'Bebas Neue', sans-serif; font-size: 72px; letter-spacing: 12px; background: linear-gradient(135deg, #f5c842 0%, #fff7c2 50%, #c9a020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 4px; }
+  .login-tagline { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 32px; }
+  .login-box label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); display: block; margin-bottom: 8px; text-align: left; }
+  .login-box input { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 14px 18px; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 18px; width: 100%; outline: none; text-align: center; letter-spacing: 6px; margin-bottom: 16px; transition: border-color .2s; }
+  .login-box input:focus { border-color: rgba(245,200,66,0.4); }
+  .login-hint { font-size: 9px; color: var(--text-dim); margin-top: 16px; line-height: 1.6; }
+  .login-hint b { color: var(--gold); }
 
-.glass {
-    background: rgba(255,255,255,0.08);
-    padding: 12px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-}
+  /* ── GITHUB CONFIG ── */
+  .config-screen { position: fixed; inset: 0; background: var(--bg); z-index: 950; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .config-box { background: var(--bg2); border: 1px solid rgba(245,200,66,0.2); border-radius: 24px; padding: 32px 24px; width: 100%; max-width: 400px; text-align: center; }
+  .config-logo { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 10px; background: linear-gradient(135deg, #f5c842, #c9a020); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
 
-.tab { display:none; }
-.tab.active { display:block; }
+  /* ── HEADER ── */
+  .hdr { background: linear-gradient(160deg, #020c18 0%, #021428 60%, #030e1c 100%); padding: 20px 16px 12px; text-align: center; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(245,200,66,0.12); }
+  .hdr::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 52px; letter-spacing: 8px; background: linear-gradient(135deg, #f5c842 0%, #fff7c2 50%, #c9a020 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+  .tagline { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 5px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 14px; }
+  .bureau-strip { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+  .bureau-tag { background: var(--glass); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all .2s; }
+  .bureau-tag:hover { border-color: var(--gold); color: var(--gold); }
+  .bureau-tag.gold { border-color: rgba(245,200,66,0.3); color: var(--gold); }
+  .bureau-tag.green { border-color: rgba(16,217,143,0.3); color: var(--emerald); }
+  .bureau-tag.red { border-color: rgba(255,71,87,0.3); color: var(--red); }
+  .bureau-tag.blue { border-color: rgba(58,134,255,0.3); color: var(--blue); }
 
-.nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-around;
-    background: black;
-    padding: 10px;
-}
+  /* ── STATUS BAR ── */
+  .status-bar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 5px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 8px; font-family: 'JetBrains Mono', monospace; }
+  .status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); animation: pulse-dot 2s infinite; margin-right: 5px; }
+  @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .sync-info { color: var(--text-dim); }
+  .session-badge { background: rgba(245,200,66,0.1); border: 1px solid rgba(245,200,66,0.2); border-radius: 20px; padding: 2px 10px; font-size: 8px; color: var(--gold); font-weight: 700; cursor: pointer; }
+
+  /* ── NAV ── */
+  nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: rgba(5,12,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 10px; }
+  .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 10px; border-radius: 10px; border: none; background: transparent; color: var(--text-dim); font-size: 8px; font-family: 'DM Sans', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: all .2s; }
+  .nav-btn i { font-size: 17px; }
+  .nav-btn.active { color: var(--gold); background: rgba(245,200,66,0.08); }
+  .nav-btn:hover:not(.active) { color: var(--text); }
+
+  /* ── TABS ── */
+  .tab { display: none; padding: 16px; max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+  .tab.active { display: block; animation: slideUp .25s ease; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── SECTION TITLE ── */
+  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .sec-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+  /* ── CARDS ── */
+  .card { background: var(--glass); border: 1px solid var(--border); border-radius: 16px; padding: 16px; transition: border-color .2s; }
+  .card:hover { border-color: rgba(245,200,66,0.15); }
+
+  /* ── MEMBER CARD ── */
+  .member-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; }
+  .member-name { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .member-name .total-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--emerald); background: rgba(16,217,143,0.1); border: 1px solid rgba(16,217,143,0.2); padding: 2px 8px; border-radius: 20px; }
+  .payment-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 7px; font-size: 9px; }
+  .payment-label { color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; min-width: 75px; margin-top: 2px; }
+  .badges-wrap { display: flex; flex-wrap: wrap; gap: 3px; }
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; }
+  .badge.noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+  .badge.epargne { background: rgba(16,217,143,0.12); color: var(--emerald); border: 1px solid rgba(16,217,143,0.3); }
+  .badge.mariage { background: rgba(58,134,255,0.12); color: var(--blue); border: 1px solid rgba(58,134,255,0.3); }
+  .badge.deces { background: rgba(255,71,87,0.12); color: var(--red); border: 1px solid rgba(255,71,87,0.3); }
+  .badge.naissance { background: rgba(168,85,247,0.12); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+  .badge.maladie { background: rgba(251,146,60,0.12); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+  .badge .yr { opacity: .6; font-size: 6px; }
+
+  /* ── HISTORY TABLE ── */
+  .hist-table { width: 100%; border-collapse: collapse; font-size: 9px; }
+  .hist-table th { text-align: left; padding: 6px 8px; font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--text-dim); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .hist-table td { padding: 7px 8px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+  .hist-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── MUR TABS ── */
+  .mur-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .mur-tab-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: all .2s; }
+  .mur-tab-btn.active { background: rgba(58,134,255,0.12); color: var(--blue); border-color: rgba(58,134,255,0.3); }
+  .mur-tab-btn.annonce.active { background: rgba(245,200,66,0.1); color: var(--gold); border-color: rgba(245,200,66,0.3); }
+
+  /* ── POST CARDS ── */
+  .post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; position: relative; overflow: hidden; }
+  .post-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--blue); }
+  .post-card.annonce-post::before { background: var(--gold); }
+  .post-author { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .post-author .author-name { color: var(--blue); }
+  .post-author .author-name.com { color: var(--gold); }
+  .post-text { font-size: 12px; line-height: 1.6; color: var(--text); }
+  .post-date { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--text-dim); }
+  .annonce-label { display: inline-block; background: rgba(245,200,66,0.12); color: var(--gold); border: 1px solid rgba(245,200,66,0.25); border-radius: 4px; font-size: 7px; font-weight: 700; padding: 1px 6px; margin-bottom: 6px; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; }
+
+  /* ── FORMS ── */
+  select, input[type="time"], input[type="text"], input[type="password"], textarea {
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 12px; width: 100%; outline: none; transition: border-color .2s;
+  }
+  select:focus, input:focus, textarea:focus { border-color: rgba(245,200,66,0.4); }
+  textarea { resize: vertical; min-height: 80px; }
+  label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+
+  /* ── BUTTONS ── */
+  .btn { border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 10px; transition: all .2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  .btn-gold { background: linear-gradient(135deg, #f5c842, #c9a020); color: #050c14; padding: 12px 24px; font-size: 10px; }
+  .btn-gold:hover { box-shadow: 0 0 20px rgba(245,200,66,0.4); transform: translateY(-1px); }
+  .btn-red { background: rgba(255,71,87,0.12); color: var(--red); border: 1px solid rgba(255,71,87,0.3); padding: 8px 16px; font-size: 9px; }
+  .btn-blue { background: rgba(58,134,255,0.12); color: var(--blue); border: 1px solid rgba(58,134,255,0.3); padding: 10px 20px; font-size: 10px; }
+  .btn-blue:hover { background: rgba(58,134,255,0.2); }
+  .btn-sm { padding: 5px 12px; font-size: 8px; border-radius: 6px; }
+  .btn-full { width: 100%; }
+  .btn-validate { border: 1px solid var(--border); background: transparent; color: var(--text-dim); padding: 4px 10px; font-size: 8px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-weight: 700; cursor: pointer; transition: all .2s; }
+  .btn-validate.active { background: rgba(16,217,143,0.15); color: var(--emerald); border-color: rgba(16,217,143,0.4); }
+
+  /* ── FINE BOX ── */
+  .fine-result { background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 14px; padding: 20px; text-align: center; }
+  .fine-amount { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--red); letter-spacing: 4px; }
+
+  /* ── MODAL ── */
+  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 16px; }
+  .modal-bg.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 24px; width: 100%; max-width: 400px; }
+  .modal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; margin-bottom: 16px; }
+  .modal-close { float: right; background: transparent; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 20px; font-size: 11px; font-weight: 700; z-index: 300; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+  .toast.success { border-color: rgba(16,217,143,0.4); color: var(--emerald); }
+  .toast.error { border-color: rgba(255,71,87,0.4); color: var(--red); }
+
+  /* ── UTILS ── */
+  .space-y-3 > * + * { margin-top: 12px; }
+  .space-y-4 > * + * { margin-top: 16px; }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .text-center { text-align: center; }
+  .w-full { width: 100%; }
+  .mt-3 { margin-top: 12px; }
+  .mt-4 { margin-top: 16px; }
+  .mb-2 { margin-bottom: 8px; }
+  .mb-3 { margin-bottom: 12px; }
+  .hidden { display: none !important; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 </style>
 </head>
+<body>
 
-<body class="pb-24 p-3">
+<!-- ═══════════════════════════════════════════ -->
+<!-- GITHUB CONFIG SCREEN -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="config-screen" id="configScreen">
+  <div class="config-box">
+    <div class="config-logo">MUTEMA</div>
+    <p style="font-size:9px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">Configuration GitHub — 1ère fois seulement</p>
+    <div class="space-y-3" style="text-align:left;">
+      <div>
+        <label>Token GitHub (Personal Access Token)</label>
+        <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxxxx">
+        <p style="font-size:8px;color:var(--text-dim);margin-top:4px;">github.com → Settings → Developer settings → PAT → scope : <b style="color:var(--gold)">gist</b></p>
+      </div>
+      <div>
+        <label>Gist ID (vide = créer automatiquement)</label>
+        <input type="text" id="cfgGist" placeholder="Laisser vide pour créer">
+      </div>
+      <button class="btn btn-gold btn-full mt-3" onclick="setupGitHub()"><i class="fas fa-github"></i> Connecter GitHub</button>
+      <button style="background:transparent;color:var(--text-dim);font-size:9px;width:100%;margin-top:8px;border:1px solid var(--border);padding:8px;border-radius:8px;cursor:pointer;" onclick="useDemoMode()">Mode local (sans GitHub)</button>
+    </div>
+  </div>
+</div>
 
+<!-- ═══════════════════════════════════════════ -->
+<!-- LOGIN SCREEN -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">MUTEMA</div>
+    <div class="login-tagline">Discipline · Rigueur · Entraide</div>
+    <label>Entrez votre code d'accès personnel</label>
+    <input type="password" id="loginInput" placeholder="••••••" maxlength="10"
+      onkeyup="if(event.key==='Enter') doLogin()" autofocus>
+    <button class="btn btn-gold btn-full" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Accéder</button>
+    <p class="login-hint">Chaque membre possède un code unique.<br>Contactez <b>Devann ou Carol</b> si vous avez oublié le vôtre.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
 <!-- HEADER -->
-<div class="text-center relative">
-    <div class="heart" style="left:10%">❤️</div>
-    <div class="heart" style="right:10%; animation-delay:2s">❤️</div>
-    <h1 class="text-3xl font-black text-yellow-400">MUTEMA</h1>
-    <p class="text-blue-300 text-xs">Plaisir • Unité • Réussite</p>
+<!-- ═══════════════════════════════════════════ -->
+<header class="hdr">
+  <div class="logo">MUTEMA</div>
+  <div class="tagline">Discipline · Rigueur · Entraide</div>
+  <div class="bureau-strip">
+    <button class="bureau-tag gold" onclick="showInfo('Président','Kamara')"><i class="fas fa-crown"></i> Kamara</button>
+    <button class="bureau-tag blue" onclick="showInfo('Communication','Devann & Carol Charonne')"><i class="fas fa-bullhorn"></i> Devann & Carol</button>
+    <button class="bureau-tag green" onclick="showInfo('Trésorière','Bermine')"><i class="fas fa-coins"></i> Bermine</button>
+    <button class="bureau-tag red" onclick="showInfo('Discipline','Caprisse Auderey')"><i class="fas fa-gavel"></i> Caprisse</button>
+  </div>
+</header>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <span><span class="status-dot"></span><span id="statusText">Chargement...</span></span>
+  <span style="display:flex;align-items:center;gap:8px;">
+    <span class="sync-info" id="lastSync">—</span>
+    <span class="session-badge" id="sessionBadge" onclick="doLogout()">Se déconnecter</span>
+  </span>
 </div>
 
-<!-- NAV -->
-<div class="nav">
-<button onclick="show('finance')">💰</button>
-<button onclick="show('com')">🗣</button>
-<button onclick="show('officiel')">📢</button>
-<button onclick="show('admin')">⚙️</button>
-</div>
+<!-- ═══════════════════════════════════════════ -->
+<!-- NAVIGATION -->
+<!-- ═══════════════════════════════════════════ -->
+<nav>
+  <button class="nav-btn active" onclick="showTab('finance',this)"><i class="fas fa-wallet"></i><span>Finances</span></button>
+  <button class="nav-btn" onclick="showTab('historique',this)"><i class="fas fa-history"></i><span>Historique</span></button>
+  <button class="nav-btn" onclick="showTab('mur',this)"><i class="fas fa-comments"></i><span>Mur</span></button>
+  <button class="nav-btn" onclick="showTab('discipline',this)"><i class="fas fa-clock"></i><span>Retard</span></button>
+  <button class="nav-btn" onclick="showTab('regles',this)"><i class="fas fa-book"></i><span>Règles</span></button>
+  <button class="nav-btn" id="navAdmin" onclick="openAdmin()" style="display:none"><i class="fas fa-key"></i><span>Gestion</span></button>
+</nav>
 
-<!-- FINANCE -->
-<div id="finance" class="tab active">
-<h2>Finances</h2>
-<div id="financeList"></div>
-</div>
+<!-- ═══════════════════════════════════════════ -->
+<!-- MAIN CONTENT -->
+<!-- ═══════════════════════════════════════════ -->
+<main>
 
-<!-- COMMUNICATION -->
-<div id="com" class="tab">
-<h2>Mur Communication</h2>
-<button onclick="postCom()">Publier</button>
-<div id="comList"></div>
-</div>
-
-<!-- OFFICIEL -->
-<div id="officiel" class="tab">
-<h2>Mur Officiel (COM)</h2>
-<button onclick="postAnnonce()">Publier</button>
-<div id="offList"></div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="tab">
-<h2>Gestion</h2>
-
-<select id="month">
-<option>Janvier</option><option>Février</option><option>Mars</option>
-<option>Avril</option><option>Mai</option><option>Juin</option>
-</select>
-
-<select id="type">
-<option value="noire">Caisse Noire</option>
-<option value="epargne">Épargne</option>
-<option value="mariage">Mariage</option>
-<option value="maladie">Maladie</option>
-<option value="deces">Décès</option>
-<option value="naissance">Naissance</option>
-</select>
-
-<div id="adminList"></div>
-
-<button onclick="viewHistory()">📜 Historique</button>
-</div>
-
-<script>
-
-// 🔐 CODES
-const MEMBER_CODES = {
-"Kamara":"1111","Bermine":"2222","Devann":"3333","Carol":"4444",
-"Achille":"5555","Syntiche":"6666","Aurnelia":"7777",
-"Alicia":"8888","Carmela":"9999","Jolene":"1010","Eric":"2020"
-};
-
-const ADMIN_CODE = "1604";
-
-const members = Object.keys(MEMBER_CODES);
-
-// 💾 DATA
-let db = JSON.parse(localStorage.getItem("db")) || members.map(n=>({
-n,noire:[],epargne:[],mariage:[],maladie:[],deces:[],naissance:[]
-}));
-
-let comPosts = JSON.parse(localStorage.getItem("com")) || [];
-let annonces = JSON.parse(localStorage.getItem("annonces")) || [];
-let history = JSON.parse(localStorage.getItem("history")) || [];
-
-// NAV
-function show(id){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-refresh();
-}
-
-// 🗣 COMMUNICATION
-function postCom(){
-let code = prompt("Code membre ?");
-let author = Object.keys(MEMBER_CODES).find(n=>MEMBER_CODES[n]===code);
-if(!author) return alert("Code invalide");
-
-let msg = prompt("Message ?");
-if(!msg) return;
-
-let post = {msg,author,date:new Date().toLocaleString()};
-comPosts.unshift(post);
-history.unshift({...post,type:"com"});
-
-localStorage.setItem("com",JSON.stringify(comPosts));
-localStorage.setItem("history",JSON.stringify(history));
-
-refresh();
-}
-
-// 📢 OFFICIEL
-function postAnnonce(){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
-
-let msg = prompt("Annonce ?");
-if(!msg) return;
-
-let post={msg,author:"COM",date:new Date().toLocaleString()};
-annonces.unshift(post);
-history.unshift({...post,type:"annonce"});
-
-localStorage.setItem("annonces",JSON.stringify(annonces));
-localStorage.setItem("history",JSON.stringify(history));
-
-refresh();
-}
-
-// 💰 VALIDATION
-function toggle(i,type){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
-
-let m=document.getElementById("month").value;
-
-db[i][type].includes(m)
-? db[i][type]=db[i][type].filter(x=>x!==m)
-: db[i][type].push(m);
-
-localStorage.setItem("db",JSON.stringify(db));
-refresh();
-}
-
-// 📜 HISTORIQUE
-function viewHistory(){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
-
-alert(history.map(h=>`${h.date} - ${h.author} : ${h.msg || h.type}`).join("\n\n"));
-}
-
-// 🔄 REFRESH
-function refresh(){
-
-financeList.innerHTML=db.map((p,i)=>`
-<div class="glass">
-<b>${p.n}</b><br>
-Noire: ${p.noire.join(", ")}<br>
-Épargne: ${p.epargne.join(", ")}<br>
-Solidarité: ${p.mariage.join(", ")} ${p.maladie.join(", ")} ${p.deces.join(", ")} ${p.naissance.join(", ")}
-</div>`).join("");
-
-adminList.innerHTML=db.map((p,i)=>`
-<div class="glass">
-${p.n}
-<button onclick="toggle(${i},'noire')">Noire</button>
-<button onclick="toggle(${i},'epargne')">Épargne</button>
-<button onclick="toggle(${i},'mariage')">Mariage</button>
-<button onclick="toggle(${i},'maladie')">Maladie</button>
-</div>`).join("");
-
-comList.innerHTML=comPosts.map(p=>`
-<div class="glass">${p.msg}<br><small>${p.author} - ${p.date}</small></div>`).join("");
-
-offList.innerHTML=annonces.map(p=>`
-<div class="glass">${p.msg}<br><small>${p.date}</small></div>`).join("");
-}
-
-refresh();
-
-</script>
-
-</body>
-</html>
+  <!-- ── FINANCES ── -->
+  <div class="tab active" id="tab-finan
