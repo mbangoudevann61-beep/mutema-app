@@ -2,216 +2,190 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUTEMA - Application Intégrale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MUTEMA - Mobile App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000b18; color: white; min-height: 100vh; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #000b18; color: white; -webkit-tap-highlight-color: transparent; }
         
-        /* EFFET DE VAGUES VIVANTES EN ARRIÈRE-PLAN */
         .wave-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 500px;
-            background: linear-gradient(135deg, #001a33 0%, #004d99 50%, #001a33 100%);
-            z-index: -1; overflow: hidden; opacity: 0.6; filter: blur(40px);
-        }
-        .wave-bg::after {
-            content: ""; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(0,255,127,0.1) 0%, transparent 50%);
-            animation: waveFlow 12s linear infinite;
-        }
-        @keyframes waveFlow {
-            0% { transform: translate(0,0) rotate(0deg); }
-            50% { transform: translate(-10%, -10%) rotate(180deg); }
-            100% { transform: translate(0,0) rotate(360deg); }
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, #003366, transparent), radial-gradient(circle at bottom left, #001a33, transparent);
+            z-index: -1;
         }
 
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 2rem; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeInUp 0.4s ease forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* NAVIGATION AGRANDIE */
-        .nav-btn { font-size: 11px !important; padding: 12px 16px !important; transition: 0.3s; }
-        .nav-active { color: #fbbf24 !important; border-bottom: 4px solid #fbbf24; transform: scale(1.1); font-weight: 900; }
-        .month-chip { font-size: 7px; padding: 2px 4px; border-radius: 4px; margin: 1px; display: inline-block; font-weight: 800; border: 1px solid rgba(255,255,255,0.1); }
+        .nav-btn.active { color: #fbbf24; background: rgba(251, 191, 36, 0.1); border-radius: 12px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="pb-24">
     <div class="wave-bg"></div>
 
-    <!-- HEADER & BUREAU (AGRANDI ET VIVANT) -->
-    <header class="pt-16 pb-8 px-6 text-center sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/5">
-        <h1 class="text-6xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-yellow-500 animate-pulse">MUTEMA</h1>
-        <p class="text-[12px] tracking-[0.6em] uppercase text-blue-400 font-bold mt-2">Discipline • Rigueur • Entraide</p>
+    <!-- HEADER INTERACTIF -->
+    <header class="p-6 text-center sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/5">
+        <h1 class="text-4xl font-black italic tracking-tighter text-yellow-500 animate-pulse">MUTEMA</h1>
         
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8 max-w-4xl mx-auto text-[11px] uppercase font-bold">
-            <div class="glass p-3"><p class="text-[8px] text-blue-300">Président</p>KAMARA</div>
-            <div class="glass p-3 border-yellow-500/30"><p class="text-[8px] text-yellow-400">Communication</p>DEVANN & CAROL</div>
-            <div class="glass p-3 text-emerald-400"><p class="text-[8px]">Trésorière</p>BERMINE</div>
-            <div class="glass p-3 text-red-400"><p class="text-[8px] tracking-tighter">Discipline</p>CAPRISSE AUDEREY</div>
+        <div class="grid grid-cols-2 gap-2 mt-4 max-w-sm mx-auto">
+            <button onclick="showRole('Président', 'Garant de l\'unité, il convoque les AG, signe les actes officiels et arbitre les conflits.')" class="glass p-2 text-[9px] font-bold uppercase border-blue-500/30">Kamara (Président)</button>
+            <button onclick="showRole('Com\'', 'Gèrent le mur, diffusent les infos, gèrent l\'image et l\'application.')" class="glass p-2 text-[9px] font-bold uppercase border-yellow-500/30">Devann & Carol (Com')</button>
+            <button onclick="showRole('Trésorerie', 'Perçoit les cotisations, gère les caisses, assure la transparence financière.')" class="glass p-2 text-[9px] font-bold uppercase border-emerald-500/30 text-emerald-400">Bermine (Trésorière)</button>
+            <button onclick="showRole('Discipline', 'Veille à la ponctualité, au port de la tenue et applique les sanctions (Art 3).')" class="glass p-2 text-[9px] font-bold uppercase border-red-500/30 text-red-400">Caprisse (Discipline)</button>
         </div>
     </header>
 
-    <!-- NAVIGATION (BOUTONS AGRANDIS) -->
-    <nav class="flex justify-around bg-slate-900/80 backdrop-blur-xl p-5 font-black uppercase tracking-widest sticky top-[230px] z-40 border-b border-white/10 overflow-x-auto no-scrollbar">
-        <button onclick="showTab('finance', this)" class="nav-btn nav-active">Finances</button>
-        <button onclick="showTab('entraide', this)" class="nav-btn text-emerald-400">Entraide</button>
-        <button onclick="showTab('mur', this)" class="nav-btn">Le Mur</button>
-        <button onclick="showTab('reglement', this)" class="nav-btn">Règlement</button>
-        <button onclick="authAdmin()" class="nav-btn text-white/30"><i class="fas fa-fingerprint text-lg"></i></button>
+    <!-- NAVIGATION MOBILE OPTIMISÉE -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-lg flex justify-around p-3 z-50 border-t border-white/10 shadow-2xl">
+        <button onclick="showTab('finance', this)" class="nav-btn active p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-wallet text-lg"></i><span>Finances</span></button>
+        <button onclick="showTab('entraide', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-hand-holding-heart text-lg text-emerald-400"></i><span>Social</span></button>
+        <button onclick="showTab('mur', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-bullhorn text-lg"></i><span>Mur</span></button>
+        <button onclick="showTab('regles', this)" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-gavel text-lg"></i><span>Règles</span></button>
+        <button onclick="authAdmin()" class="nav-btn p-2 text-[10px] flex flex-col items-center gap-1"><i class="fas fa-key text-lg text-red-500"></i><span>Gestion</span></button>
     </nav>
 
-    <main class="container mx-auto p-6 max-w-2xl">
+    <main class="p-4 max-w-lg mx-auto">
 
         <!-- SECTION FINANCES -->
-        <div id="finance" class="tab-content active space-y-4">
-            <h2 class="text-2xl font-black text-yellow-500 italic border-l-4 border-yellow-500 pl-3 mb-6 uppercase">Suivi Cotisations 2026</h2>
-            <div id="finance-list" class="space-y-3"></div>
+        <div id="finance" class="tab-content active space-y-3">
+            <h2 class="text-xl font-bold text-yellow-500 italic mb-4">Suivi Annuel</h2>
+            <div id="finance-list" class="space-y-2"></div>
         </div>
 
-        <!-- ENTRAIDE SOCIALE -->
-        <div id="entraide" class="tab-content space-y-4">
-            <h2 class="text-2xl font-black text-emerald-400 italic mb-4 uppercase">Entraide & Solidarité</h2>
-            <div id="entraide-list" class="space-y-3"></div>
+        <!-- SECTION ENTRAIDE SOCIALE -->
+        <div id="entraide" class="tab-content space-y-3">
+            <h2 class="text-xl font-bold text-emerald-400 italic mb-4">Événements & Solidarité</h2>
+            <div id="entraide-list" class="space-y-2"></div>
         </div>
 
-        <!-- MUR DE COMMUNICATION (SÉCURISÉ) -->
-        <div id="mur" class="tab-content space-y-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-black text-blue-400 italic uppercase">Annonces Officielles</h2>
-                <button onclick="authAdmin('post')" class="bg-blue-600 text-white text-[10px] font-black px-6 py-3 rounded-full shadow-lg transition hover:scale-110">PUBLIER</button>
+        <!-- MUR DE COMMUNICATION -->
+        <div id="mur" class="tab-content space-y-4">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-xl font-bold text-blue-400 uppercase italic">Le Mur</h2>
+                <button onclick="authAdmin('post')" class="bg-blue-600 text-[10px] font-bold px-4 py-2 rounded-full shadow-lg">Publier</button>
             </div>
-            <div id="mur-list" class="space-y-4">
-                <div class="glass p-8 border-l-4 border-blue-500 italic text-base">
-                    "La rigueur est le socle de notre unité. N'oubliez pas les pénalités de retard selon l'Art 3."
-                    <p class="text-right text-[10px] mt-6 font-black text-blue-400 uppercase tracking-widest">- DEVANN & CAROL</p>
-                </div>
+            <div id="mur-list" class="space-y-3">
+                <div class="glass p-5 border-l-4 border-blue-500 italic text-sm">"Discipline et Rigueur pour notre avenir."<p class="text-right text-[9px] mt-3 font-bold text-blue-400 uppercase">- COM'</p></div>
             </div>
         </div>
 
         <!-- RÈGLEMENT INTÉRIEUR -->
-        <div id="reglement" class="tab-content">
-            <div class="glass p-8 border border-white/10 shadow-2xl">
-                <h2 class="text-3xl font-black text-yellow-500 uppercase italic mb-8 border-b border-white/20 pb-2 text-center">Règlement Intérieur</h2>
-                <div class="text-[12px] space-y-6 text-slate-300 leading-relaxed text-justify overflow-y-auto max-h-[500px] pr-4 no-scrollbar">
-                    <p><b class="text-yellow-500 uppercase">ART 2 :</b> Réunion le 5 du mois à 14h00. Amende réception défaillante : 5 000 FCFA.</p>
-                    <p><b class="text-red-500 uppercase">ART 3 :</b> Retard (14h30) : 500 FCFA. Doublé chaque 30 min. Tenue officielle : 2 000 FCFA.</p>
-                    <p><b class="text-emerald-500 uppercase">ART 4 :</b> Caisse Noire : 1 000 FCFA. Épargne : 1 000 FCFA. Collation : 5 000 FCFA.</p>
-                    <p><b class="text-blue-400 uppercase">ART 5 (SOLIDARITÉ) :</b> Mariage : 10 000 FCFA. Décès/Santé : 5 000 FCFA. Naissance : 3 000 FCFA.</p>
+        <div id="regles" class="tab-content">
+            <div class="glass p-6 border border-white/10 max-h-[70vh] overflow-y-auto no-scrollbar">
+                <h2 class="text-xl font-bold text-yellow-500 uppercase text-center mb-4 border-b border-white/10 pb-2">Règlement Officiel</h2>
+                <div class="text-[11px] space-y-4 text-slate-300 text-justify">
+                    <p><b class="text-yellow-500">ART 2 :</b> Réunions le 5 du mois à 14h00. Amende réception défaillante : 5 000 FCFA.</p>
+                    <p><b class="text-red-500">ART 3 :</b> Retard (14h30) : 500 FCFA. Doublé toutes les 30 min. Tenue : 2 000 FCFA.</p>
+                    <p><b class="text-emerald-500 text-xs">ART 4 & 5 :</b> Caisse Noire (1000F) | Épargne (1000F) | Mariage (10 000F) | Décès & Maladie (5 000F) | Naissance (3 000F).</p>
                 </div>
             </div>
         </div>
 
-        <!-- ADMINISTRATION -->
+        <!-- CONSOLE ADMIN (SÉCURISÉE) -->
         <div id="admin" class="tab-content">
-            <div class="glass p-8 border-2 border-red-500/30">
-                <h3 class="text-center font-black text-red-500 uppercase mb-8 italic">Console Validation</h3>
-                <div class="flex gap-2 mb-8">
-                    <select id="selMonth" class="flex-1 bg-slate-900 border border-white/20 p-4 rounded-xl text-sm font-bold text-yellow-500">
+            <div class="glass p-5 border-2 border-red-500/30">
+                <h3 class="text-center font-bold text-red-500 uppercase mb-4 text-xs tracking-widest">Console Trésorerie</h3>
+                <div class="flex flex-col gap-2 mb-4">
+                    <select id="selMonth" class="bg-slate-900 border border-white/20 p-3 rounded-xl text-xs font-bold text-yellow-500">
                         <option value="Mai">Mai</option><option value="Juin">Juin</option>
                     </select>
-                    <select id="selSolidarity" class="flex-1 bg-emerald-900/30 border border-emerald-500/30 p-4 rounded-xl text-sm font-bold text-emerald-500">
-                        <option value="">Solidarité...</option>
-                        <option value="Mariage">Mariage</option>
-                        <option value="Décès">Décès</option>
-                        <option value="Naissance">Naissance</option>
+                    <select id="selType" class="bg-emerald-900/30 border border-emerald-500/30 p-3 rounded-xl text-[10px] font-bold text-emerald-500">
+                        <option value="noire">Caisse Noire</option>
+                        <option value="epargne">Épargne</option>
+                        <option value="mariage">Mariage</option>
+                        <option value="deces">Décès</option>
+                        <option value="naissance">Naissance</option>
+                        <option value="maladie">Maladie</option>
+                        <option value="solidarite">Solidarité</option>
                     </select>
                 </div>
-                <div id="admin-rows" class="space-y-4"></div>
-                <button onclick="saveDB()" class="w-full mt-10 bg-green-600 py-5 rounded-2xl font-black uppercase text-xs tracking-widest shadow-2xl transition hover:bg-green-700">Synchroniser</button>
+                <div id="admin-rows" class="space-y-2"></div>
+                <button onclick="saveDB()" class="w-full mt-6 bg-green-600 py-4 rounded-xl font-bold uppercase text-[10px] tracking-widest shadow-xl">Synchroniser</button>
             </div>
         </div>
 
     </main>
 
-    <footer class="text-center p-12 opacity-30 text-[11px] font-black uppercase tracking-[0.5em]">
-        MUTEMA ASSOCIATION • 2026 • <span id="footer-date"></span>
-    </footer>
+    <footer class="text-center p-8 opacity-30 text-[10px] font-bold uppercase tracking-[0.5em] mb-10">MUTEMA • 2026 • <span id="f-date"></span></footer>
 
     <script>
-        const ACCESS_CODE = "1604"; 
-        let appData = JSON.parse(localStorage.getItem('mutema_v11_db')) || [
-            {n: "Kamara", noire: [], epargne: [], entraide: []},
-            {n: "Bermine", noire: [], epargne: [], entraide: []},
-            {n: "Caprisse Auderey", noire: [], epargne: [], entraide: []},
-            {n: "Devann", noire: [], epargne: [], entraide: []},
-            {n: "Carol Charonne", noire: [], epargne: [], entraide: []},
-            {n: "Achille", noire: [], epargne: [], entraide: []},
-            {n: "Syntiche Promesse", noire: [], epargne: [], entraide: []},
-            {n: "Aurnelia", noire: [], epargne: [], entraide: []},
-            {n: "Alicia Carolle", noire: [], epargne: [], entraide: []},
-            {n: "Carmela", noire: [], epargne: [], entraide: []},
-            {n: "Jolene", noire: [], epargne: [], entraide: []},
-            {n: "Éric Didier", noire: [], epargne: [], entraide: []}
+        const CODE = "1604";
+        let db = JSON.parse(localStorage.getItem('mutema_mobile_v1')) || [
+            {n: "Kamara", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Bermine", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Caprisse Auderey", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Devann", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Carol Charonne", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Achille", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Syntiche Promesse", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Aurnelia", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Alicia Carolle", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Carmela", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Jolene", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []},
+            {n: "Éric Didier", noire: [], epargne: [], mariage: [], deces: [], naissance: [], maladie: [], solidarite: []}
         ];
 
         function showTab(id, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(btn) btn.classList.add('nav-active');
+            if(btn) btn.classList.add('active');
             refresh();
         }
 
-        function authAdmin(type) {
-            if(prompt("Code Chargé de Communication :") === ACCESS_CODE) {
-                if(type === 'post') {
-                    let msg = prompt("Message pour le Mur :");
-                    if(msg) alert("Annonce publiée !");
-                } else showTab('admin');
-            } else alert("Accès réservé.");
+        function showRole(title, desc) { alert(`${title} : ${desc}`); }
+
+        function authAdmin(t) {
+            if(prompt("Code Chargé de Communication :") === CODE) {
+                if(t === 'post') alert("Publié !");
+                else showTab('admin');
+            } else alert("Accès refusé.");
         }
 
         function refresh() {
-            const fView = document.getElementById('finance-list');
-            const eView = document.getElementById('entraide-list');
-            const aRows = document.getElementById('admin-rows');
-            const selM = document.getElementById('selMonth').value;
-            fView.innerHTML = ''; eView.innerHTML = ''; aRows.innerHTML = '';
+            const fV = document.getElementById('finance-list');
+            const eV = document.getElementById('entraide-list');
+            const aR = document.getElementById('admin-rows');
+            const m = document.getElementById('selMonth').value;
+            const ty = document.getElementById('selType').value;
+            fV.innerHTML = ''; eV.innerHTML = ''; aR.innerHTML = '';
 
-            appData.forEach((m, i) => {
-                fView.innerHTML += `<div class="glass p-5 border-l-4 border-yellow-500">
-                    <p class="text-[10px] font-black uppercase text-yellow-500 mb-2">${m.n}</p>
-                    <div class="flex flex-wrap gap-2">${m.noire.map(mo => `<span class="month-chip bg-yellow-500/20 text-yellow-500 border border-yellow-500/40">${mo}</span>`).join('') || '---'}</div>
+            db.forEach((p, i) => {
+                fV.innerHTML += `<div class="glass p-3 flex flex-col gap-1 border-l-2 border-yellow-500 text-[10px]">
+                    <p class="font-bold uppercase">${p.n}</p>
+                    <div class="flex flex-wrap gap-1">${p.noire.map(x => `<span class="bg-yellow-500/20 text-yellow-500 px-1 rounded-sm text-[7px]">${x}</span>`).join('')}</div>
                 </div>`;
 
-                if(m.entraide.length > 0) {
-                    eView.innerHTML += `<div class="glass p-5 border-l-4 border-emerald-500 bg-emerald-900/10">
-                        <p class="text-[10px] font-black uppercase mb-2">${m.n}</p>
-                        <div class="flex gap-2">${m.entraide.map(ev => `<span class="text-[8px] font-bold bg-emerald-500 text-black px-3 py-1 rounded uppercase tracking-tighter">${ev}</span>`).join('')}</div>
+                let soc = [...p.mariage, ...p.deces, ...p.naissance, ...p.maladie, ...p.solidarite];
+                if(soc.length > 0) {
+                    eV.innerHTML += `<div class="glass p-3 flex justify-between items-center border-l-2 border-emerald-500 text-[10px]">
+                        <p class="font-bold">${p.n}</p>
+                        <div class="flex gap-1">${soc.map(x => `<span class="bg-emerald-500/20 text-emerald-500 px-1 rounded text-[7px] uppercase">${x}</span>`).join('')}</div>
                     </div>`;
                 }
 
-                aRows.innerHTML += `<div class="bg-black/40 p-4 rounded-2xl flex justify-between items-center text-[11px]">
-                    <span class="font-bold uppercase">${m.n}</span>
-                    <div class="flex gap-3">
-                        <button onclick="togglePay(${i}, 'noire')" class="w-14 py-2 border rounded font-black ${m.noire.includes(selM) ? 'bg-yellow-500 text-black' : 'border-white/10 text-white/30'}">CN</button>
-                        <button onclick="toggleSocial(${i})" class="w-14 py-2 border rounded font-black ${document.getElementById('selSolidarity').value && m.entraide.includes(document.getElementById('selSolidarity').value) ? 'bg-emerald-500 text-black' : 'border-white/10 text-white/30'}">SOC</button>
-                    </div>
+                aR.innerHTML += `<div class="bg-black/40 p-2 rounded-xl flex justify-between items-center text-[10px]">
+                    <span class="font-bold truncate w-24">${p.n}</span>
+                    <button onclick="toggleP(${i}, '${ty}')" class="px-4 py-1 border rounded ${p[ty].includes(m) ? 'bg-yellow-500 text-black border-yellow-400' : 'border-white/10 text-white/30'}">VALIDER</button>
                 </div>`;
             });
-            document.getElementById('footer-date').innerText = new Date().toLocaleDateString();
+            document.getElementById('f-date').innerText = new Date().toLocaleDateString();
         }
 
-        function togglePay(idx, type) {
+        function toggleP(idx, ty) {
             const m = document.getElementById('selMonth').value;
-            appData[idx][type].includes(m) ? appData[idx][type] = appData[idx][type].filter(x => x !== m) : appData[idx][type].push(m);
-            refresh();
-        }
-
-        function toggleSocial(idx) {
-            const s = document.getElementById('selSolidarity').value;
-            if(!s) return alert("Sélectionnez l'événement social !");
-            appData[idx].entraide.includes(s) ? appData[idx].entraide = appData[idx].entraide.filter(x => x !== s) : appData[idx].entraide.push(s);
+            db[idx][ty].includes(m) ? db[idx][ty] = db[idx][ty].filter(x => x !== m) : db[idx][ty].push(m);
             refresh();
         }
 
         function saveDB() {
-            localStorage.setItem('mutema_v11_db', JSON.stringify(appData));
-            alert("Mise à jour réussie !");
+            localStorage.setItem('mutema_mobile_v1', JSON.stringify(db));
+            alert("Synchronisé !");
             showTab('finance');
         }
 
