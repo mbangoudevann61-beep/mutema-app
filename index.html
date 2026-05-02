@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MUTEMA</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
+
 <script>
-if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator') {
   navigator.serviceWorker.register('service-worker.js');
 }
 </script>
@@ -16,23 +16,61 @@ if ('serviceWorker' in navigator) {
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body { background:#000b18; color:white; font-family:sans-serif; }
-.glass { background:rgba(255,255,255,0.05); padding:12px; border-radius:15px; margin-bottom:10px; }
+body {
+    background: linear-gradient(#001a33, #003366);
+    color: white;
+    font-family: sans-serif;
+}
+
+/* ❤️ COEURS */
+.heart {
+    position: absolute;
+    color: rgba(255,255,255,0.3);
+    animation: float 6s infinite ease-in-out;
+}
+@keyframes float {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-20px);}
+}
+
+.glass {
+    background: rgba(255,255,255,0.08);
+    padding: 12px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
 .tab { display:none; }
 .tab.active { display:block; }
-.nav { position:fixed; bottom:0; left:0; right:0; display:flex; justify-content:space-around; background:black; padding:10px; }
-button { font-size:12px; }
+
+.nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    background: black;
+    padding: 10px;
+}
 </style>
 </head>
 
 <body class="pb-24 p-3">
 
-<h1 class="text-center text-2xl text-yellow-400 font-bold">MUTEMA</h1>
+<!-- HEADER -->
+<div class="text-center relative">
+    <div class="heart" style="left:10%">❤️</div>
+    <div class="heart" style="right:10%; animation-delay:2s">❤️</div>
+    <h1 class="text-3xl font-black text-yellow-400">MUTEMA</h1>
+    <p class="text-blue-300 text-xs">Plaisir • Unité • Réussite</p>
+</div>
 
+<!-- NAV -->
 <div class="nav">
 <button onclick="show('finance')">💰</button>
-<button onclick="show('public')">🗣</button>
-<button onclick="show('annonce')">📢</button>
+<button onclick="show('com')">🗣</button>
+<button onclick="show('officiel')">📢</button>
 <button onclick="show('admin')">⚙️</button>
 </div>
 
@@ -42,23 +80,23 @@ button { font-size:12px; }
 <div id="financeList"></div>
 </div>
 
-<!-- PUBLIC -->
-<div id="public" class="tab">
-<h2>Mur Public</h2>
-<button onclick="postPublic()">Publier</button>
-<div id="publicList"></div>
+<!-- COMMUNICATION -->
+<div id="com" class="tab">
+<h2>Mur Communication</h2>
+<button onclick="postCom()">Publier</button>
+<div id="comList"></div>
 </div>
 
-<!-- ANNONCES -->
-<div id="annonce" class="tab">
-<h2>Annonces (COM)</h2>
+<!-- OFFICIEL -->
+<div id="officiel" class="tab">
+<h2>Mur Officiel (COM)</h2>
 <button onclick="postAnnonce()">Publier</button>
-<div id="annonceList"></div>
+<div id="offList"></div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="tab">
-<h2>Gestion (COM)</h2>
+<h2>Gestion</h2>
 
 <select id="month">
 <option>Janvier</option><option>Février</option><option>Mars</option>
@@ -68,41 +106,36 @@ button { font-size:12px; }
 <select id="type">
 <option value="noire">Caisse Noire</option>
 <option value="epargne">Épargne</option>
+<option value="mariage">Mariage</option>
+<option value="maladie">Maladie</option>
+<option value="deces">Décès</option>
+<option value="naissance">Naissance</option>
 </select>
 
 <div id="adminList"></div>
 
-<button onclick="viewHistory()">📜 Voir historique</button>
+<button onclick="viewHistory()">📜 Historique</button>
 </div>
 
 <script>
 
-// 🔐 CODES MEMBRES
+// 🔐 CODES
 const MEMBER_CODES = {
-"Kamara":"1111",
-"Bermine":"2222",
-"Devann":"3333",
-"Carol":"4444",
-"Achille":"5555",
-"Syntiche":"6666",
-"Aurnelia":"7777",
-"Alicia":"8888",
-"Carmela":"9999",
-"Jolene":"1010",
-"Eric":"2020"
+"Kamara":"1111","Bermine":"2222","Devann":"3333","Carol":"4444",
+"Achille":"5555","Syntiche":"6666","Aurnelia":"7777",
+"Alicia":"8888","Carmela":"9999","Jolene":"1010","Eric":"2020"
 };
 
 const ADMIN_CODE = "1604";
 
-// 👥 MEMBRES
 const members = Object.keys(MEMBER_CODES);
 
-// 💾 DATABASE
+// 💾 DATA
 let db = JSON.parse(localStorage.getItem("db")) || members.map(n=>({
-n, noire:[], epargne:[]
+n,noire:[],epargne:[],mariage:[],maladie:[],deces:[],naissance:[]
 }));
 
-let publicPosts = JSON.parse(localStorage.getItem("public")) || [];
+let comPosts = JSON.parse(localStorage.getItem("com")) || [];
 let annonces = JSON.parse(localStorage.getItem("annonces")) || [];
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
@@ -113,88 +146,87 @@ document.getElementById(id).classList.add('active');
 refresh();
 }
 
-// 🗣 MUR PUBLIC
-function postPublic(){
-let code = prompt("Ton code ?");
+// 🗣 COMMUNICATION
+function postCom(){
+let code = prompt("Code membre ?");
 let author = Object.keys(MEMBER_CODES).find(n=>MEMBER_CODES[n]===code);
-if(!author) return alert("Code invalide ❌");
+if(!author) return alert("Code invalide");
 
 let msg = prompt("Message ?");
 if(!msg) return;
 
-let post = {msg, author, date:new Date().toLocaleString()};
+let post = {msg,author,date:new Date().toLocaleString()};
+comPosts.unshift(post);
+history.unshift({...post,type:"com"});
 
-publicPosts.unshift(post);
-history.unshift({...post, type:"public"});
-
-localStorage.setItem("public", JSON.stringify(publicPosts));
-localStorage.setItem("history", JSON.stringify(history));
+localStorage.setItem("com",JSON.stringify(comPosts));
+localStorage.setItem("history",JSON.stringify(history));
 
 refresh();
 }
 
-// 📢 ANNONCES (COM)
+// 📢 OFFICIEL
 function postAnnonce(){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Accès refusé ❌");
+if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
 
 let msg = prompt("Annonce ?");
 if(!msg) return;
 
-let post = {msg, author:"COM", date:new Date().toLocaleString()};
-
+let post={msg,author:"COM",date:new Date().toLocaleString()};
 annonces.unshift(post);
-history.unshift({...post, type:"annonce"});
+history.unshift({...post,type:"annonce"});
 
-localStorage.setItem("annonces", JSON.stringify(annonces));
-localStorage.setItem("history", JSON.stringify(history));
+localStorage.setItem("annonces",JSON.stringify(annonces));
+localStorage.setItem("history",JSON.stringify(history));
 
 refresh();
 }
 
 // 💰 VALIDATION
 function toggle(i,type){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Accès refusé ❌");
+if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
 
-let m = document.getElementById("month").value;
+let m=document.getElementById("month").value;
 
-if(db[i][type].includes(m)){
-db[i][type] = db[i][type].filter(x=>x!==m);
-}else{
-db[i][type].push(m);
-}
+db[i][type].includes(m)
+? db[i][type]=db[i][type].filter(x=>x!==m)
+: db[i][type].push(m);
 
-localStorage.setItem("db", JSON.stringify(db));
+localStorage.setItem("db",JSON.stringify(db));
 refresh();
 }
 
 // 📜 HISTORIQUE
 function viewHistory(){
-if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé ❌");
+if(prompt("Code COM ?")!==ADMIN_CODE) return alert("Refusé");
 
-alert(history.map(h=>`${h.date} - ${h.author} : ${h.msg}`).join("\n\n") || "Vide");
+alert(history.map(h=>`${h.date} - ${h.author} : ${h.msg || h.type}`).join("\n\n"));
 }
 
 // 🔄 REFRESH
 function refresh(){
 
-financeList.innerHTML = db.map((p,i)=>`
+financeList.innerHTML=db.map((p,i)=>`
 <div class="glass">
 <b>${p.n}</b><br>
 Noire: ${p.noire.join(", ")}<br>
-Epargne: ${p.epargne.join(", ")}
+Épargne: ${p.epargne.join(", ")}<br>
+Solidarité: ${p.mariage.join(", ")} ${p.maladie.join(", ")} ${p.deces.join(", ")} ${p.naissance.join(", ")}
 </div>`).join("");
 
-adminList.innerHTML = db.map((p,i)=>`
+adminList.innerHTML=db.map((p,i)=>`
 <div class="glass">
 ${p.n}
 <button onclick="toggle(${i},'noire')">Noire</button>
-<button onclick="toggle(${i},'epargne')">Epargne</button>
+<button onclick="toggle(${i},'epargne')">Épargne</button>
+<button onclick="toggle(${i},'mariage')">Mariage</button>
+<button onclick="toggle(${i},'maladie')">Maladie</button>
 </div>`).join("");
 
-publicList.innerHTML = publicPosts.map(p=>`
+comList.innerHTML=comPosts.map(p=>`
 <div class="glass">${p.msg}<br><small>${p.author} - ${p.date}</small></div>`).join("");
 
-annonceList.innerHTML = annonces.map(p=>`
+offList.innerHTML=annonces.map(p=>`
 <div class="glass">${p.msg}<br><small>${p.date}</small></div>`).join("");
 }
 
