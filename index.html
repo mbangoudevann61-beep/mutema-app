@@ -8,201 +8,189 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; color: #f1f5f9; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .btn-nav.active { color: #fbbf24; background: rgba(251, 191, 36, 0.1); border-radius: 15px; }
-        .article-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .active-nav { color: #fbbf24 !important; border-bottom: 3px solid #fbbf24; }
+        .bg-mutema { background-color: #003366; }
     </style>
 </head>
-<body class="pb-28">
+<body class="pb-20">
 
-    <header class="p-8 pt-14 text-center bg-slate-900 border-b border-slate-800 shadow-2xl">
-        <h1 class="text-5xl font-black italic tracking-tighter text-yellow-500">MUTEMA</h1>
-        <p class="text-[10px] tracking-[0.5em] uppercase text-blue-400 mt-2 font-bold">Discipline • Rigueur • Entraide</p>
+    <!-- BARRE D'ÉTAT DYNAMIQUE (HEADER) -->
+    <header class="bg-mutema text-white p-6 shadow-2xl sticky top-0 z-50">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-black italic tracking-tighter">MUTEMA</h1>
+            <p class="text-blue-300 text-[10px] uppercase tracking-[0.3em] mt-1">Discipline • Rigueur • Entraide</p>
+            
+            <!-- BUREAU VISIBLE -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-6 max-w-4xl mx-auto">
+                <div class="bg-white/10 p-2 rounded-xl border border-white/5">
+                    <p class="text-[8px] uppercase text-blue-200">Président</p>
+                    <p class="font-bold text-[10px] uppercase">Kamara</p>
+                </div>
+                <div class="bg-white/10 p-2 rounded-xl border border-white/5">
+                    <p class="text-[8px] uppercase text-blue-200">Com'</p>
+                    <p class="font-bold text-[9px] uppercase">Devann & Carol</p>
+                </div>
+                <div class="bg-white/10 p-2 rounded-xl border border-white/5 text-emerald-300">
+                    <p class="text-[8px] uppercase">Trésorière</p>
+                    <p class="font-bold text-[10px] uppercase">Bermine</p>
+                </div>
+                <div class="bg-white/10 p-2 rounded-xl border border-white/5 text-red-300">
+                    <p class="text-[8px] uppercase tracking-tighter">Discipline</p>
+                    <p class="font-bold text-[10px] uppercase">Caprisse Auderey</p>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 flex justify-around p-3 z-50">
-        <button onclick="showTab('bureau', this)" class="btn-nav active p-3 text-[10px] flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-home text-xl"></i><span>Accueil</span>
-        </button>
-        <button onclick="showTab('comm', this)" class="btn-nav text-slate-500 p-3 text-[10px] flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-bullhorn text-xl"></i><span>Com'</span>
-        </button>
-        <button onclick="showTab('finance', this)" class="btn-nav text-slate-500 p-3 text-[10px] flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-wallet text-xl"></i><span>Finances</span>
-        </button>
-        <button onclick="showTab('reglement', this)" class="btn-nav text-slate-500 p-3 text-[10px] flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-gavel text-xl"></i><span>Règles</span>
-        </button>
-        <button onclick="showTab('admin', this)" class="btn-nav text-slate-500 p-3 text-[10px] flex flex-col items-center gap-1 transition-all">
-            <i class="fas fa-user-shield text-xl"></i><span>Gestion</span>
-        </button>
+    <!-- NAVIGATION -->
+    <nav class="bg-slate-900 text-gray-400 flex justify-around p-3 text-[10px] font-bold uppercase tracking-widest border-b border-white/5">
+        <button onclick="showTab('finance', this)" class="nav-btn active-nav px-2">Finances</button>
+        <button onclick="showTab('mur', this)" class="nav-btn px-2">Le Mur</button>
+        <button onclick="showTab('regles', this)" class="nav-btn px-2">Règlement</button>
+        <button onclick="unlockAdmin()" class="nav-btn px-2 text-red-500"><i class="fas fa-lock mr-1"></i> Admin</button>
     </nav>
 
-    <main class="p-5 max-w-3xl mx-auto">
+    <main class="container mx-auto p-4 max-w-2xl">
 
-        <div id="bureau" class="tab-content active space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-blue-900/30 p-5 rounded-3xl border border-blue-500/30">
-                    <h3 class="text-blue-400 font-black text-xs uppercase mb-3">Présidence</h3>
-                    <p class="text-xl font-bold italic">Kamara</p>
-                </div>
-                <div class="bg-emerald-900/30 p-5 rounded-3xl border border-emerald-500/30">
-                    <h3 class="text-emerald-400 font-black text-xs uppercase mb-3">Trésorerie</h3>
-                    <p class="text-xl font-bold italic">Bermine</p>
-                </div>
-            </div>
-            <div class="bg-slate-800/50 p-6 rounded-3xl border border-slate-700">
-                <h3 class="text-slate-400 font-black text-xs uppercase mb-4 tracking-widest text-center">Membres Actifs</h3>
-                <div id="membres-list" class="grid grid-cols-2 md:grid-cols-3 gap-3 text-[11px]"></div>
-            </div>
+        <!-- SECTION FINANCES (PUBLIC) -->
+        <div id="finance" class="tab-content active space-y-4">
+            <h2 class="text-xl font-black text-slate-800 uppercase italic border-l-4 border-mutema pl-3">État des Paiements</h2>
+            <div id="view-finance" class="grid gap-3"></div>
         </div>
 
-        <div id="reglement" class="tab-content space-y-6">
-            <h2 class="text-3xl font-black text-yellow-500 italic mb-6">Règlement Intérieur</h2>
-            <div class="space-y-4">
-                <div class="article-card p-5 rounded-2xl">
-                    <h4 class="text-blue-400 font-bold text-sm mb-2 uppercase">Préambule</h4>
-                    <p class="text-xs leading-relaxed opacity-80 italic">Complète les statuts. Définit le fonctionnement et les règles de conduite. Force exécutoire pour tous.</p>
-                </div>
-                <div class="article-card p-5 rounded-2xl border-l-4 border-yellow-500">
-                    <h4 class="text-yellow-500 font-bold text-sm mb-1 uppercase tracking-tighter">Art 3 : Discipline & Ponctualité</h4>
-                    <ul class="text-[11px] space-y-1 opacity-90">
-                        <li>⏱ Retard (après 14h30) : 500 FCFA</li>
-                        <li>⏳ Tranche de 30 min suppl. : +500 FCFA</li>
-                        <li>👕 Tenue officielle manquante : 2 000 FCFA</li>
-                        <li>🗣 Impolitesse : 1 000 FCFA</li>
-                    </ul>
-                </div>
-                <div class="article-card p-5 rounded-2xl border-l-4 border-green-500">
-                    <h4 class="text-green-500 font-bold text-sm mb-1 uppercase tracking-tighter">Art 4 : Gestion & Épargne</h4>
-                    <ul class="text-[11px] space-y-1 opacity-90">
-                        <li>🏦 Caisse Noire : 1 000 FCFA / mois</li>
-                        <li>💰 Épargne : 1 000 FCFA / mois (restitué)</li>
-                        <li>🍽 Collation séance : 5 000 FCFA</li>
-                    </ul>
-                </div>
-                <div class="article-card p-5 rounded-2xl border-l-4 border-blue-400">
-                    <h4 class="text-blue-400 font-bold text-sm mb-1 uppercase tracking-tighter">Art 5 : Solidarité</h4>
-                    <ul class="text-[11px] space-y-1 opacity-90">
-                        <li>💍 Mariage : 10 000 FCFA | Fiançailles : 5 000 FCFA</li>
-                        <li>🏥 Santé / Décès : 5 000 FCFA</li>
-                        <li>🍼 Naissance : 3 000 FCFA</li>
-                    </ul>
-                </div>
-                <div class="article-card p-5 rounded-2xl opacity-60">
-                    <h4 class="text-slate-400 font-bold text-[10px] uppercase">Confidentialité (Art 8)</h4>
-                    <p class="text-[10px]">Délibérations sacrées. Secret absolu obligatoire.</p>
+        <!-- LE MUR DE COMMUNICATION (SÉCURISÉ) -->
+        <div id="mur" class="tab-content space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-black text-blue-800 uppercase italic">Le Mur d'Annonces</h2>
+                <button onclick="unlockComm()" class="text-[9px] bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold uppercase">Publier</button>
+            </div>
+            <div id="annonces-list" class="space-y-4">
+                <div class="bg-blue-600 text-white p-6 rounded-3xl shadow-lg relative">
+                    <i class="fas fa-quote-left absolute top-2 left-2 opacity-20"></i>
+                    <p class="text-sm italic italic">"La rigueur est le chemin de la réussite. Soyons ponctuels pour notre réunion du 5."</p>
+                    <p class="text-[9px] text-right mt-3 font-black uppercase text-blue-200">- Direction Communication</p>
                 </div>
             </div>
         </div>
 
-        <div id="comm" class="tab-content space-y-4">
-            <div class="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-[2.5rem] shadow-xl">
-                <h2 class="text-2xl font-black mb-2">Canal Communication</h2>
-                <p class="text-xs opacity-80 uppercase font-bold tracking-widest mb-6 underline">Géré par Devann & Carol</p>
-                <div class="bg-white/10 p-5 rounded-2xl border border-white/10 italic text-sm leading-relaxed">
-                    "Bienvenue sur l'espace officiel. Discipline, Rigueur et Entraide sont nos maîtres-mots."
+        <!-- RÈGLEMENT INTÉRIEUR COMPLET -->
+        <div id="regles" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                <h2 class="text-2xl font-black text-slate-900 uppercase italic mb-6">Règlement Intérieur</h2>
+                <div class="text-[11px] space-y-4 text-slate-700 leading-relaxed text-justify">
+                    <p><strong>Art 2 :</strong> Réunions le 5 de chaque mois à 14h00. Amende réception : 5 000 F.</p>
+                    <p><strong>Art 3 :</strong> Retard (14h30) : 500 F. Doublé toutes les 30 min. Tenue : 2 000 F.</p>
+                    <p><strong>Art 4 :</strong> Caisse Noire : 1 000 F. Épargne : 1 000 F. Collation : 5 000 F.</p>
+                    <p><strong>Art 5 (Solidarité) :</strong> Mariage : 10 000 F. Décès/Santé : 5 000 F. Naissance : 3 000 F.</p>
                 </div>
             </div>
         </div>
 
-        <div id="finance" class="tab-content space-y-4">
-            <h2 class="text-2xl font-black mb-6 italic">État des Cotisations</h2>
-            <div id="public-finance-view" class="space-y-3"></div>
-        </div>
-
+        <!-- GESTION ADMIN (TRÉSORERIE & COM) -->
         <div id="admin" class="tab-content">
-            <div class="bg-red-600/10 border border-red-500/30 p-6 rounded-[2.5rem]">
-                <h2 class="text-xl font-bold text-red-500 mb-6 uppercase text-center italic">Console Trésorerie</h2>
+            <div class="bg-slate-900 text-white p-6 rounded-3xl border-t-4 border-red-600">
+                <h2 class="text-lg font-bold mb-6 text-red-500 uppercase">Console Trésorerie & Com'</h2>
                 <div id="admin-table" class="space-y-3"></div>
-                <button onclick="saveAndSync()" class="w-full mt-10 bg-red-600 py-5 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:bg-red-700 active:scale-95 transition-all">
-                    Enregistrer les paiements
-                </button>
+                <button onclick="saveAndSync()" class="w-full mt-8 bg-green-600 py-4 rounded-xl font-black uppercase text-xs shadow-xl">Enregistrer les données</button>
             </div>
         </div>
 
     </main>
 
+    <footer class="text-center p-8 text-gray-400 text-[10px] uppercase tracking-widest font-bold">
+        Association MUTEMA • 2026<br>
+        <span id="footer-date"></span>
+    </footer>
+
     <script>
-        let membres = JSON.parse(localStorage.getItem('mutema_v4_db')) || [
-            {nom: "Kamara", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Bermine", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Caprisse Auderey", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Devann", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Carol Charonne", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Achille", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Syntiche Promesse", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Aurnelia", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Alicia Carolle", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Carmela", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Jolene", noire: false, dateN: "-", epargne: false, dateE: "-"},
-            {nom: "Éric Didier", noire: false, dateN: "-", epargne: false, dateE: "-"}
+        const ACCESS_CODE = "1604"; // Ton code secret (16 avril)
+        let membres = JSON.parse(localStorage.getItem('mutema_final_db')) || [
+            {nom: "Kamara", n: false, e: false, d: "-"},
+            {nom: "Bermine", n: false, e: false, d: "-"},
+            {nom: "Caprisse Auderey", n: false, e: false, d: "-"},
+            {nom: "Devann", n: false, e: false, d: "-"},
+            {nom: "Carol Charonne", n: false, e: false, d: "-"},
+            {nom: "Achille", n: false, e: false, d: "-"},
+            {nom: "Syntiche Promesse", n: false, e: false, d: "-"},
+            {nom: "Aurnelia", n: false, e: false, d: "-"},
+            {nom: "Alicia Carolle", n: false, e: false, d: "-"},
+            {nom: "Carmela", n: false, e: false, d: "-"},
+            {nom: "Jolene", n: false, e: false, d: "-"},
+            {nom: "Éric Didier", n: false, e: false, d: "-"}
         ];
 
         function showTab(id, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active', 'text-yellow-500'));
-            document.querySelectorAll('.btn-nav').forEach(b => b.classList.add('text-slate-500'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
             document.getElementById(id).classList.add('active');
-            btn.classList.add('active', 'text-yellow-500');
-            btn.classList.remove('text-slate-500');
-            renderUI();
+            if(btn) btn.classList.add('active-nav');
+            render();
         }
 
-        function renderUI() {
-            const mList = document.getElementById('membres-list');
-            const pFinance = document.getElementById('public-finance-view');
-            const aTable = document.getElementById('admin-table');
+        function unlockAdmin() {
+            let p = prompt("Code d'accès chargé de communication :");
+            if(p === ACCESS_CODE) showTab('admin');
+            else alert("Accès refusé.");
+        }
 
-            mList.innerHTML = ''; pFinance.innerHTML = ''; aTable.innerHTML = '';
+        function unlockComm() {
+            let p = prompt("Code secret pour publier :");
+            if(p === ACCESS_CODE) {
+                let msg = prompt("Entrez votre annonce :");
+                if(msg) alert("Annonce enregistrée ! (Simulation)");
+            } else alert("Accès refusé.");
+        }
+
+        function render() {
+            const vFin = document.getElementById('view-finance');
+            const aTab = document.getElementById('admin-table');
+            vFin.innerHTML = ''; aTab.innerHTML = '';
 
             membres.forEach((m, i) => {
-                mList.innerHTML += `<div class="p-2 bg-slate-800 rounded-xl border border-slate-700 text-center">${m.nom}</div>`;
-
-                pFinance.innerHTML += `
-                    <div class="bg-slate-800/40 p-4 rounded-2xl border border-slate-700 flex justify-between items-center">
+                vFin.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
                         <div>
-                            <p class="font-bold text-sm uppercase">${m.nom}</p>
-                            <p class="text-[8px] text-slate-500 italic mt-1">Valide : ${m.dateN}</p>
+                            <p class="font-bold text-xs uppercase">${m.nom}</p>
+                            <p class="text-[8px] text-gray-400 italic">Validé le : ${m.d}</p>
                         </div>
                         <div class="flex gap-2">
-                            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] ${m.noire ? 'bg-yellow-500 text-black' : 'bg-slate-700 text-slate-500'}">CN</span>
-                            <span class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] ${m.epargne ? 'bg-green-500 text-black' : 'bg-slate-700 text-slate-500'}">EP</span>
+                            <span class="px-2 py-1 rounded-lg text-[9px] font-black ${m.n ? 'bg-yellow-400 text-black' : 'bg-gray-100 text-gray-300'}">NOIRE</span>
+                            <span class="px-2 py-1 rounded-lg text-[9px] font-black ${m.e ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-300'}">EPARGNE</span>
                         </div>
                     </div>`;
 
-                aTable.innerHTML += `
-                    <div class="bg-slate-900 p-4 rounded-2xl flex justify-between items-center border border-slate-800">
-                        <span class="text-xs font-bold">${m.nom}</span>
-                        <div class="flex gap-3">
-                            <button onclick="togglePay(${i}, 'noire')" class="w-10 h-10 rounded-xl border ${m.noire ? 'bg-yellow-500 border-yellow-400' : 'bg-slate-800 border-slate-700 text-slate-600'}"><i class="fas fa-coins"></i></button>
-                            <button onclick="togglePay(${i}, 'epargne')" class="w-10 h-10 rounded-xl border ${m.epargne ? 'bg-green-500 border-green-400' : 'bg-slate-800 border-slate-700 text-slate-600'}"><i class="fas fa-vault"></i></button>
+                aTab.innerHTML += `
+                    <div class="bg-slate-800 p-3 rounded-xl flex justify-between items-center border border-slate-700">
+                        <span class="text-[11px] font-bold">${m.nom}</span>
+                        <div class="flex gap-2">
+                            <button onclick="togglePay(${i}, 'n')" class="p-2 rounded-lg text-[9px] ${m.n ? 'bg-yellow-500 text-black' : 'bg-slate-700 text-slate-500'}">NOIRE</button>
+                            <button onclick="togglePay(${i}, 'e')" class="p-2 rounded-lg text-[9px] ${m.e ? 'bg-green-500 text-white' : 'bg-slate-700 text-slate-500'}">ÉPARGNE</button>
                         </div>
                     </div>`;
             });
+            document.getElementById('footer-date').innerText = new Date().toLocaleDateString();
         }
 
-        function togglePay(index, type) {
-            membres[index][type] = !membres[index][type];
-            if (membres[index][type]) {
+        function togglePay(idx, type) {
+            membres[idx][type] = !membres[idx][type];
+            if(membres[idx][type]) {
                 const now = new Date();
-                membres[index][type === 'noire' ? 'dateN' : 'dateE'] = now.toLocaleDateString();
-            } else {
-                membres[index][type === 'noire' ? 'dateN' : 'dateE'] = "-";
+                membres[idx].d = now.toLocaleDateString() + " à " + now.getHours() + "h" + now.getMinutes();
             }
-            renderUI();
+            render();
         }
 
         function saveAndSync() {
-            localStorage.setItem('mutema_v4_db', JSON.stringify(membres));
-            alert("✅ Données enregistrées avec succès !");
-            showTab('finance', document.querySelectorAll('.btn-nav')[2]);
+            localStorage.setItem('mutema_final_db', JSON.stringify(membres));
+            alert("Données synchronisées !");
+            showTab('finance');
         }
 
-        window.onload = renderUI;
+        window.onload = render;
     </script>
 </body>
 </html>
