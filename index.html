@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — 2026 Cloud</title>
+<title>MUTEMA — Firebase Live 2026</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
   :root {
     --gold: #f5c842; --emerald: #10d98f; --red: #ff4757; --blue: #3a86ff;
@@ -40,21 +45,18 @@
   .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
-  /* ── TABS ── */
+  /* ── CONTENU ── */
   .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
   @keyframes fadeIn { from{opacity:0} to{opacity:1} }
   .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
   .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
 
-  /* ── BADGES ── */
   .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; padding: 3px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-weight: bold; }
   .badge-noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
   .badge-epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
   .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
   .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
-
-  .msg-bubble { background: #1a2a3a; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px; border-left: 3px solid var(--blue); }
 
   /* ── MODAL ── */
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
@@ -79,8 +81,8 @@
 
 <main>
   <div class="tab active" id="tab-home">
-    <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations</div>
-    <div id="statusText" style="font-size:10px; color:var(--emerald); margin-bottom:10px">Connexion au Cloud...</div>
+    <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations (LIVE)</div>
+    <div id="statusText" style="font-size:10px; color:var(--emerald); margin-bottom:10px">Connexion Firebase...</div>
     <div id="financeList"></div>
   </div>
 
@@ -92,13 +94,13 @@
 
   <div class="tab" id="tab-messages">
     <div class="sec-title"><i class="fas fa-comments"></i> Discussion</div>
-    <textarea id="freeInput" placeholder="Écrire aux membres..."></textarea>
+    <textarea id="freeInput" placeholder="Message aux membres..."></textarea>
     <button class="btn btn-gold" style="background:var(--blue); color:white" onclick="postFree()">Envoyer</button>
     <div id="freeList" style="margin-top:15px"></div>
   </div>
 
   <div class="tab" id="tab-admin">
-    <div class="sec-title"><i class="fas fa-key"></i> Gestion Administrateur</div>
+    <div class="sec-title"><i class="fas fa-key"></i> Gestion</div>
     <div class="card">
         <select id="aM"></select>
         <select id="aType">
@@ -122,51 +124,45 @@
 </nav>
 
 <footer style="text-align:center; padding:10px; font-size:10px; opacity:0.3">
-  © 2026 ASSOCIATION MUTEMA
+  © 2026 ASSOCIATION MUTEMA • Firebase Realtime
 </footer>
 
 <div class="modal" id="secModal">
   <div class="modal-box">
     <h4 style="color:var(--gold)">CODE D'ACCÈS</h4>
-    <input type="password" id="secKey" placeholder="Entrez le code">
+    <input type="password" id="secKey" placeholder="Code">
     <button class="btn btn-gold" onclick="checkKey()">Valider</button>
     <button class="btn" style="background:none; color:white" onclick="closeSec()">Annuler</button>
   </div>
 </div>
 
 <script>
-// --- CONFIGURATION SYNC SÉCURISÉE (COUPÉE EN DEUX) ---
-const part1 = "ghp_BJHvVzOD5zQYlxrx0jKy"; 
-const part2 = "Ljv0slnxiS05syFy"; 
-const GH_TOKEN = part1 + part2; 
-const GH_GIST_ID = "a561f0b4f6cbd4679cce7ec1c44187a6";
+// --- CONFIGURATION FIREBASE (TES CLÉS) ---
+const firebaseConfig = {
+    apiKey: "AIzaSyCSDJym8wBdLKwo2mRQL2LvJUAKZgSEZRg",
+    authDomain: "mutema-app.firebaseapp.com",
+    projectId: "mutema-app",
+    storageBucket: "mutema-app.firebasestorage.app",
+    messagingSenderId: "651266231790",
+    appId: "1:651266231790:web:0df29e38760248b88d12ff",
+    databaseURL: "https://mutema-app-default-rtdb.firebaseio.com" // Vérifie cette URL dans l'onglet Realtime Database
+};
+
+// Initialisation
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
 const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
-let db = { payments: [], mur: [], messages: [], projets: [] };
 let curAction = null;
 
-// --- MOTEUR DE SYNCHRONISATION ---
-async function saveToGitHub() {
-  document.getElementById('statusText').textContent = "⏳ Synchro en cours...";
-  try {
-    const res = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, {
-      method: "PATCH",
-      headers: { "Authorization": `token ${GH_TOKEN}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ files: { "mutema_db.json": { content: JSON.stringify(db) } } })
-    });
-    if(res.ok) document.getElementById('statusText').textContent = "✅ À jour (Cloud)";
-  } catch (e) { document.getElementById('statusText').textContent = "❌ Erreur Synchro"; }
-}
-
-async function loadFromGitHub() {
-  try {
-    const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, { headers: { "Authorization": `token ${GH_TOKEN}` } });
-    const data = await r.json();
-    db = JSON.parse(data.files["mutema_db.json"].content);
-    renderAll();
-    document.getElementById('statusText').textContent = "✅ Connecté au Cloud";
-  } catch (e) { document.getElementById('statusText').textContent = "⚠️ Mode Local"; }
-}
+// --- ÉCOUTEUR FIREBASE (TEMPS RÉEL) ---
+database.ref('mutema_data').on('value', (snapshot) => {
+    const data = snapshot.val() || { payments: {}, projects: {}, messages: {} };
+    renderAll(data);
+    document.getElementById('statusText').textContent = "✅ Connecté (Live)";
+}, (error) => {
+    document.getElementById('statusText').textContent = "❌ Erreur de connexion";
+});
 
 // --- ANIMATIONS ---
 function spawnF() {
@@ -184,7 +180,6 @@ function showTab(id, btn) {
   document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   if(btn) btn.classList.add('active');
-  renderAll();
 }
 
 function openSec(act, btn) { curAction = {act, btn}; document.getElementById('secModal').classList.add('active'); }
@@ -195,49 +190,64 @@ function checkKey() {
   if(k === "1604" || k === "2026") {
     closeSec();
     if(curAction.act === 'admin') showTab('admin', curAction.btn);
-    if(curAction.act === 'projet') { const t = prompt("Titre du projet :"); if(t){db.projets.unshift({title:t}); saveToGitHub(); renderAll();}}
-  } else { alert("Accès refusé."); }
+    if(curAction.act === 'projet') { 
+        const t = prompt("Titre du projet :"); 
+        if(t) database.ref('mutema_data/projects').push({title: t});
+    }
+  } else { alert("Code erroné."); }
 }
 
 function addPay() {
-  const p = { id: Date.now(), name: document.getElementById('aM').value, type: document.getElementById('aType').value, month: document.getElementById('aMonth').value };
-  db.payments.unshift(p);
-  saveToGitHub(); renderAll();
+  const p = { 
+      name: document.getElementById('aM').value, 
+      type: document.getElementById('aType').value, 
+      month: document.getElementById('aMonth').value,
+      timestamp: Date.now()
+  };
+  database.ref('mutema_data/payments').push(p);
 }
 
 function deletePay(id) {
-  if(confirm("Supprimer ce versement ?")) { db.payments = db.payments.filter(x => x.id !== id); saveToGitHub(); renderAll(); }
+  if(confirm("Supprimer ce versement ?")) {
+      database.ref('mutema_data/payments/' + id).remove();
+  }
 }
 
 function postFree() {
   const v = document.getElementById('freeInput').value;
-  if(v) { db.messages.unshift({text: v, time: new Date().toLocaleTimeString()}); document.getElementById('freeInput').value=""; saveToGitHub(); renderAll(); }
+  if(v) {
+      database.ref('mutema_data/messages').push({text: v, time: new Date().toLocaleTimeString()});
+      document.getElementById('freeInput').value = "";
+  }
 }
 
-function renderAll() {
-  // Rendu des finances par membre
+function renderAll(data) {
+  const pays = data.payments ? Object.entries(data.payments) : [];
+  const projs = data.projects ? Object.values(data.projects) : [];
+  const msgs = data.messages ? Object.values(data.messages) : [];
+
+  // Home
   document.getElementById('financeList').innerHTML = MEMBERS.map(m => {
-    const p = db.payments.filter(x => x.name === m);
-    return `<div class="card"><b>${m}</b><br>${p.map(v=>`<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}</div>`;
+    const p = pays.filter(([id, v]) => v.name === m);
+    return `<div class="card"><b>${m}</b><br>${p.map(([id, v])=>`<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}</div>`;
   }).join('');
   
-  // Rendu des messages
-  document.getElementById('freeList').innerHTML = db.messages.map(m => `<div class="msg-bubble">${m.text}</div>`).join('');
+  // Messages
+  document.getElementById('freeList').innerHTML = msgs.reverse().map(m => `<div style="background:#1a2a3a; padding:10px; border-radius:10px; margin-bottom:5px; font-size:12px; border-left:3px solid var(--blue)">${m.text}</div>`).join('');
   
-  // Rendu des projets
-  document.getElementById('projectList').innerHTML = db.projets.map(p => `<div class="card">🚀 ${p.title}</div>`).join('');
+  // Projets
+  document.getElementById('projectList').innerHTML = projs.map(p => `<div class="card">🚀 ${p.title}</div>`).join('');
 
-  // Rendu de la liste admin (pour correction)
-  document.getElementById('adminPayList').innerHTML = db.payments.map(p => `
+  // Admin
+  document.getElementById('adminPayList').innerHTML = pays.map(([id, v]) => `
     <div class="card" style="display:flex; justify-content:space-between; font-size:11px">
-      <span>${p.name} (${p.month})</span>
-      <i class="fas fa-trash" onclick="deletePay(${p.id})" style="color:var(--red)"></i>
+      <span>${v.name} (${v.month})</span>
+      <i class="fas fa-trash" onclick="deletePay('${id}')" style="color:var(--red)"></i>
     </div>`).join('');
 }
 
 window.onload = () => {
   document.getElementById('aM').innerHTML = MEMBERS.map(m=>`<option>${m}</option>`).join('');
-  loadFromGitHub();
 };
 </script>
 </body>
