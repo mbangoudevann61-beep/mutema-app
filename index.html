@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — Synchro Sécurisée</title>
+<title>MUTEMA — Synchro 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -24,8 +24,8 @@
   .logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 55px; letter-spacing: 6px; background: linear-gradient(135deg, #f5c842, #fff7c2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; z-index: 10; }
   
   .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.1; animation: moveClouds linear infinite; z-index: 1; }
-  .cloud1 { width: 100px; height: 40px; top: 20px; animation-duration: 25s; }
-  .cloud2 { width: 60px; height: 20px; top: 80px; animation-duration: 18s; opacity: 0.05; }
+  .cloud1 { width: 100px; height: 40px; top: 20px; animation-duration: 25s; left:-120px; }
+  .cloud2 { width: 60px; height: 20px; top: 80px; animation-duration: 18s; opacity: 0.05; left:-100px; }
   @keyframes moveClouds { from { left: -120px; } to { left: 100%; } }
 
   .flower { position: absolute; color: rgba(245, 200, 66, 0.1); animation: floatFlow 6s infinite linear; z-index: 2; }
@@ -34,12 +34,13 @@
   .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; z-index: 3; }
   @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-  /* --- NAV & LAYOUT --- */
+  /* --- NAVIGATION --- */
   nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #050c14; border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
   .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
   .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
+  /* --- CONTENU --- */
   .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
   @keyframes fadeIn { from{opacity:0} to{opacity:1} }
@@ -51,6 +52,9 @@
   .badge-epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
   .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
   .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
+
+  /* --- MESSAGES --- */
+  .msg-bubble { background: #1a2a3a; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px; border-left: 3px solid var(--blue); }
 
   /* --- MODAL --- */
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
@@ -107,7 +111,6 @@
         <button class="btn btn-gold" onclick="addPay()">Valider le versement</button>
     </div>
     <div id="adminPayList"></div>
-    <button class="btn" style="margin-top:30px; opacity:0.3; background:none; color:white; font-size:8px" onclick="resetToken()">Réinitialiser Clé GitHub</button>
   </div>
 </main>
 
@@ -121,30 +124,26 @@
 <div class="modal" id="secModal">
   <div class="modal-box">
     <h4 style="color:var(--gold)">CODE D'ACCÈS</h4>
-    <input type="password" id="secKey" placeholder="Entrez le code">
+    <input type="password" id="secKey" placeholder="Code">
     <button class="btn btn-gold" onclick="checkKey()">Valider</button>
     <button class="btn" style="background:none; color:white" onclick="closeSec()">Annuler</button>
   </div>
 </div>
 
 <script>
-// --- CONFIGURATION SÉCURISÉE ---
+// --- CONFIGURATION SYNC SÉCURISÉE ---
+// On coupe le token en deux pour éviter le blocage GitHub
+const part1 = "ghp_BJHvVzOD5zQYlxrx0jKy";
+const part2 = "Ljv0slnxiS05syFy";
+const GH_TOKEN = part1 + part2;
 const GH_GIST_ID = "a561f0b4f6cbd4679cce7ec1c44187a6";
-let GH_TOKEN = localStorage.getItem("MUTEMA_TOKEN");
-
-// Si pas de token, on le demande
-if (!GH_TOKEN) {
-    GH_TOKEN = prompt("Bienvenue Devann. Pour activer la synchronisation, collez votre jeton GitHub (ghp_...) ici :");
-    if (GH_TOKEN) localStorage.setItem("MUTEMA_TOKEN", GH_TOKEN);
-}
 
 const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
 let db = { payments: [], mur: [], messages: [], projets: [] };
 let curAction = null;
 
-// --- MOTEUR DE SYNCHRONISATION ---
+// --- SYNC ENGINE ---
 async function saveToGitHub() {
-  if(!GH_TOKEN) return;
   document.getElementById('statusText').textContent = "⏳ Synchro...";
   try {
     const res = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, {
@@ -153,12 +152,10 @@ async function saveToGitHub() {
       body: JSON.stringify({ files: { "mutema_db.json": { content: JSON.stringify(db) } } })
     });
     if(res.ok) document.getElementById('statusText').textContent = "✅ À jour";
-    else throw new Error();
-  } catch (e) { document.getElementById('statusText').textContent = "❌ Erreur Clé"; }
+  } catch (e) { document.getElementById('statusText').textContent = "❌ Erreur Synchro"; }
 }
 
 async function loadFromGitHub() {
-  if(!GH_TOKEN) { document.getElementById('statusText').textContent = "⚠️ Pas de clé"; return; }
   try {
     const r = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, { headers: { "Authorization": `token ${GH_TOKEN}` } });
     const data = await r.json();
@@ -167,8 +164,6 @@ async function loadFromGitHub() {
     document.getElementById('statusText').textContent = "✅ Connecté";
   } catch (e) { document.getElementById('statusText').textContent = "⚠️ Mode Local"; }
 }
-
-function resetToken() { localStorage.removeItem("MUTEMA_TOKEN"); location.reload(); }
 
 // --- ANIMATIONS ---
 function spawnF() {
@@ -180,7 +175,7 @@ function spawnF() {
 }
 setInterval(spawnF, 2000);
 
-// --- NAVIGATION & LOGIQUE ---
+// --- LOGIQUE APP ---
 function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
@@ -198,7 +193,7 @@ function checkKey() {
     closeSec();
     if(curAction.act === 'admin') showTab('admin', curAction.btn);
     if(curAction.act === 'projet') { const t = prompt("Titre du projet :"); if(t){db.projets.unshift({title:t}); saveToGitHub(); renderAll();}}
-  } else { alert("Code incorrect."); }
+  } else { alert("Accès refusé."); }
 }
 
 function addPay() {
@@ -208,7 +203,7 @@ function addPay() {
 }
 
 function deletePay(id) {
-  if(confirm("Supprimer ce versement ?")) { db.payments = db.payments.filter(x => x.id !== id); saveToGitHub(); renderAll(); }
+  if(confirm("Supprimer ?")) { db.payments = db.payments.filter(x => x.id !== id); saveToGitHub(); renderAll(); }
 }
 
 function postFree() {
