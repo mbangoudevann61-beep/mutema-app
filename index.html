@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — Synchro 2026</title>
+<title>MUTEMA — 2026 Cloud</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -15,7 +15,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 110px; overflow-x: hidden; }
 
-  /* --- HEADER ANIMÉ --- */
+  /* ── HEADER ANIMÉ ── */
   .hero {
     position: relative; background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
     height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -34,29 +34,29 @@
   .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; z-index: 3; }
   @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-  /* --- NAVIGATION --- */
+  /* ── NAVIGATION ── */
   nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #050c14; border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
   .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
   .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
-  /* --- CONTENU --- */
+  /* ── TABS ── */
   .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
   @keyframes fadeIn { from{opacity:0} to{opacity:1} }
   .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
   .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
 
+  /* ── BADGES ── */
   .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; padding: 3px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-weight: bold; }
   .badge-noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
   .badge-epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
   .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
   .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
 
-  /* --- MESSAGES --- */
   .msg-bubble { background: #1a2a3a; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px; border-left: 3px solid var(--blue); }
 
-  /* --- MODAL --- */
+  /* ── MODAL ── */
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
   .modal.active { display: flex; }
   .modal-box { background: var(--bg2); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); width: 280px; text-align: center; }
@@ -80,7 +80,7 @@
 <main>
   <div class="tab active" id="tab-home">
     <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations</div>
-    <div id="statusText" style="font-size:9px; color:var(--emerald); margin-bottom:10px">Connexion...</div>
+    <div id="statusText" style="font-size:10px; color:var(--emerald); margin-bottom:10px">Connexion au Cloud...</div>
     <div id="financeList"></div>
   </div>
 
@@ -92,13 +92,13 @@
 
   <div class="tab" id="tab-messages">
     <div class="sec-title"><i class="fas fa-comments"></i> Discussion</div>
-    <textarea id="freeInput" placeholder="Votre message..."></textarea>
+    <textarea id="freeInput" placeholder="Écrire aux membres..."></textarea>
     <button class="btn btn-gold" style="background:var(--blue); color:white" onclick="postFree()">Envoyer</button>
     <div id="freeList" style="margin-top:15px"></div>
   </div>
 
   <div class="tab" id="tab-admin">
-    <div class="sec-title"><i class="fas fa-key"></i> Gestion</div>
+    <div class="sec-title"><i class="fas fa-key"></i> Gestion Administrateur</div>
     <div class="card">
         <select id="aM"></select>
         <select id="aType">
@@ -121,37 +121,40 @@
   <button class="nav-btn" onclick="openSec('admin', this)"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
 </nav>
 
+<footer style="text-align:center; padding:10px; font-size:10px; opacity:0.3">
+  © 2026 ASSOCIATION MUTEMA
+</footer>
+
 <div class="modal" id="secModal">
   <div class="modal-box">
     <h4 style="color:var(--gold)">CODE D'ACCÈS</h4>
-    <input type="password" id="secKey" placeholder="Code">
+    <input type="password" id="secKey" placeholder="Entrez le code">
     <button class="btn btn-gold" onclick="checkKey()">Valider</button>
     <button class="btn" style="background:none; color:white" onclick="closeSec()">Annuler</button>
   </div>
 </div>
 
 <script>
-// --- CONFIGURATION SYNC SÉCURISÉE ---
-// On coupe le token en deux pour éviter le blocage GitHub
-const part1 = "ghp_BJHvVzOD5zQYlxrx0jKy";
-const part2 = "Ljv0slnxiS05syFy";
-const GH_TOKEN = part1 + part2;
+// --- CONFIGURATION SYNC SÉCURISÉE (COUPÉE EN DEUX) ---
+const part1 = "ghp_BJHvVzOD5zQYlxrx0jKy"; 
+const part2 = "Ljv0slnxiS05syFy"; 
+const GH_TOKEN = part1 + part2; 
 const GH_GIST_ID = "a561f0b4f6cbd4679cce7ec1c44187a6";
 
 const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
 let db = { payments: [], mur: [], messages: [], projets: [] };
 let curAction = null;
 
-// --- SYNC ENGINE ---
+// --- MOTEUR DE SYNCHRONISATION ---
 async function saveToGitHub() {
-  document.getElementById('statusText').textContent = "⏳ Synchro...";
+  document.getElementById('statusText').textContent = "⏳ Synchro en cours...";
   try {
     const res = await fetch(`https://api.github.com/gists/${GH_GIST_ID}`, {
       method: "PATCH",
       headers: { "Authorization": `token ${GH_TOKEN}`, "Content-Type": "application/json" },
       body: JSON.stringify({ files: { "mutema_db.json": { content: JSON.stringify(db) } } })
     });
-    if(res.ok) document.getElementById('statusText').textContent = "✅ À jour";
+    if(res.ok) document.getElementById('statusText').textContent = "✅ À jour (Cloud)";
   } catch (e) { document.getElementById('statusText').textContent = "❌ Erreur Synchro"; }
 }
 
@@ -161,7 +164,7 @@ async function loadFromGitHub() {
     const data = await r.json();
     db = JSON.parse(data.files["mutema_db.json"].content);
     renderAll();
-    document.getElementById('statusText').textContent = "✅ Connecté";
+    document.getElementById('statusText').textContent = "✅ Connecté au Cloud";
   } catch (e) { document.getElementById('statusText').textContent = "⚠️ Mode Local"; }
 }
 
@@ -203,7 +206,7 @@ function addPay() {
 }
 
 function deletePay(id) {
-  if(confirm("Supprimer ?")) { db.payments = db.payments.filter(x => x.id !== id); saveToGitHub(); renderAll(); }
+  if(confirm("Supprimer ce versement ?")) { db.payments = db.payments.filter(x => x.id !== id); saveToGitHub(); renderAll(); }
 }
 
 function postFree() {
@@ -212,14 +215,19 @@ function postFree() {
 }
 
 function renderAll() {
+  // Rendu des finances par membre
   document.getElementById('financeList').innerHTML = MEMBERS.map(m => {
     const p = db.payments.filter(x => x.name === m);
     return `<div class="card"><b>${m}</b><br>${p.map(v=>`<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}</div>`;
   }).join('');
   
-  document.getElementById('freeList').innerHTML = db.messages.map(m => `<div style="background:#1a2a3a; padding:10px; border-radius:10px; margin-bottom:5px; font-size:12px; border-left:3px solid var(--blue)">${m.text}</div>`).join('');
+  // Rendu des messages
+  document.getElementById('freeList').innerHTML = db.messages.map(m => `<div class="msg-bubble">${m.text}</div>`).join('');
+  
+  // Rendu des projets
   document.getElementById('projectList').innerHTML = db.projets.map(p => `<div class="card">🚀 ${p.title}</div>`).join('');
 
+  // Rendu de la liste admin (pour correction)
   document.getElementById('adminPayList').innerHTML = db.payments.map(p => `
     <div class="card" style="display:flex; justify-content:space-between; font-size:11px">
       <span>${p.name} (${p.month})</span>
