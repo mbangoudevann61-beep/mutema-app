@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — 2026</title>
+<title>MUTEMA — 2026 Officiel</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -13,21 +13,47 @@
     --text: #e8f0fe; --text-dim: rgba(232,240,254,0.45);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 110px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 110px; overflow-x: hidden; }
 
-  /* ── HEADER ── */
+  /* ── HEADER ANIMÉ (NUAGES + FLEURS) ── */
   .hero {
     position: relative; background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
     height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;
     overflow: hidden; border-bottom: 1px solid var(--gold);
   }
-  .logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 55px; letter-spacing: 6px; background: linear-gradient(135deg, #f5c842, #fff7c2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; z-index: 10; }
-  .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; }
+  .logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 55px; letter-spacing: 6px; background: linear-gradient(135deg, #f5c842, #fff7c2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; z-index: 10; position: relative; }
+  
+  /* Nuages qui défilent */
+  .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.1; animation: moveClouds linear infinite; z-index: 1; }
+  .cloud::after, .cloud::before { content: ''; position: absolute; background: white; border-radius: 50%; }
+  
+  .cloud1 { width: 100px; height: 40px; top: 20px; animation-duration: 25s; }
+  .cloud1::after { width: 50px; height: 50px; top: -25px; left: 15px; }
+  .cloud1::before { width: 40px; height: 40px; top: -15px; left: 50px; }
+
+  .cloud2 { width: 60px; height: 20px; top: 80px; animation-duration: 15s; animation-delay: -5s; opacity: 0.05; }
+  .cloud2::after { width: 30px; height: 30px; top: -15px; left: 10px; }
+
+  .cloud3 { width: 80px; height: 30px; top: 120px; animation-duration: 20s; animation-delay: -10s; }
+  .cloud3::after { width: 40px; height: 40px; top: -20px; left: 15px; }
+
+  @keyframes moveClouds { from { left: -120px; } to { left: 100%; } }
+
+  /* Fleurs flottantes */
+  .flower { position: absolute; color: rgba(245, 200, 66, 0.15); animation: floatFlowers 8s infinite linear; z-index: 2; font-size: 12px; }
+  @keyframes floatFlowers {
+    0% { transform: translateY(180px) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-20px) rotate(360deg); opacity: 0; }
+  }
+
+  .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; z-index: 3; }
   @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
   /* ── NAV ── */
   nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #050c14; border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
-  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; }
+  .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
   .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
@@ -35,8 +61,8 @@
   .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
   @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 12px; }
-  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+  .card { background: var(--bg2); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 12px; position: relative; }
+  .sec-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
 
   /* ── BADGES PRÉCIS ── */
   .badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; padding: 3px 6px; border-radius: 4px; margin: 2px; display: inline-block; font-weight: bold; }
@@ -45,25 +71,41 @@
   .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
   .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
 
-  /* ── MESSAGES ── */
+  /* ── GESTION : MODIFICATION PAIEMENTS ── */
+  .pay-edit-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 11px; }
+  .btn-del { background: none; border: none; color: var(--red); cursor: pointer; opacity: 0.5; transition: 0.3s; padding: 0 10px; }
+  .btn-del:hover { opacity: 1; transform: scale(1.2); }
+
+  /* ── MESSAGES & PROJETS ── */
   .msg-bubble { background: #1a2a3a; border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px; border-left: 3px solid var(--blue); }
   .project-card { background: linear-gradient(45deg, #0a1622, #112233); border-left: 4px solid var(--emerald); padding: 15px; border-radius: 10px; margin-bottom: 10px; }
 
-  /* ── MODAL ── */
-  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
+  /* ── MODAL SÉCURITÉ ── */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.2s; }
   .modal.active { display: flex; }
-  .modal-box { background: var(--bg2); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); width: 280px; text-align: center; }
+  .modal-box { background: var(--bg2); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); width: 280px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
   
-  input, select, textarea { width: 100%; padding: 10px; background: #050c14; border: 1px solid #333; color: white; border-radius: 5px; margin-top: 8px; }
-  .btn { width: 100%; padding: 12px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 10px; }
+  input, select, textarea { width: 100%; padding: 10px; background: #050c14; border: 1px solid #333; color: white; border-radius: 5px; margin-top: 8px; font-size: 13px; font-family: inherit; }
+  input:focus, select:focus { border-color: var(--gold); outline: none; }
+  .btn { width: 100%; padding: 12px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 10px; transition: 0.2s; }
+  .btn:active { transform: scale(0.98); }
   .btn-gold { background: var(--gold); color: black; }
+  .btn-red { background: var(--red); color: white; }
+
+  footer { text-align:center; padding:20px; font-size:10px; opacity:0.3; letter-spacing: 2px; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
 <header class="hero">
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+  
+  <div id="flower-container"></div>
+
   <div class="logo-main">MUTEMA</div>
-  <div style="font-size:8px; color:var(--gold); letter-spacing:3px; z-index:10">RIGUEUR • DISCIPLINE • ENTRAIDE</div>
+  <div style="font-size:8px; color:var(--gold); letter-spacing:3px; z-index:10; font-weight:bold">RIGUEUR • DISCIPLINE • ENTRAIDE</div>
   <div class="wave"></div>
 </header>
 
@@ -97,17 +139,34 @@
   <div class="tab" id="tab-retard">
     <div class="sec-title" style="color:var(--red)"><i class="fas fa-clock"></i> Calcul Retard</div>
     <div class="card">
+      <label style="font-size:10px; opacity:0.5">Heure d'arrivée de Benguié</label>
       <input type="time" id="tA" value="14:31">
-      <button class="btn btn-red" onclick="calcF()">Calculer</button>
-      <div id="fR" style="display:none; text-align:center; margin-top:15px">
-        <h2 id="fAmount" style="color:var(--red)">0 FCFA</h2>
+      <button class="btn btn-red" onclick="calcF()">Calculer Sanction</button>
+      <div id="fR" style="display:none; text-align:center; margin-top:15px; border-top:1px solid rgba(255,0,0,0.2); padding-top:10px">
+        <h2 id="fAmount" style="color:var(--red); font-family:'Bebas Neue'">0 FCFA</h2>
+        <p style="font-size:10px; color:var(--red)">Versement immédiat requis.</p>
       </div>
     </div>
   </div>
 
   <div class="tab" id="tab-admin">
-    <div class="sec-title"><i class="fas fa-key"></i> Administration</div>
-    <div id="adminArea"></div>
+    <div class="sec-title"><i class="fas fa-key"></i> Espace Gestion</div>
+    
+    <div class="card" style="border: 1px solid var(--emerald)">
+      <h5 style="color:var(--emerald); margin-bottom:10px">Enregistrer un versement</h5>
+      <select id="aM">${MEMBERS.map(m=>`<option>${m}</option>`).join('')}</select>
+      <select id="aType">
+        <option value="noire">Caisse Noire</option>
+        <option value="epargne">Épargne</option>
+        <option value="deces">Décès</option>
+        <option value="solidarite">Solidarité (Mariage/Autres)</option>
+      </select>
+      <select id="aMonth"><option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option><option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option><option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option></select>
+      <button class="btn btn-gold" style="background:var(--emerald); color:white" onclick="addPay()">Enregistrer</button>
+    </div>
+
+    <div class="sec-title" style="margin-top:20px; color:var(--red)"><i class="fas fa-edit"></i> Corriger une erreur</div>
+    <div id="adminPayList"></div>
   </div>
 </main>
 
@@ -119,13 +178,15 @@
   <button class="nav-btn" onclick="openSec('admin', this)"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
 </nav>
 
-<footer style="text-align:center; padding:20px; font-size:10px; opacity:0.5">
-  © 2026 ASSOCIATION MUTEMA
+<footer>
+  © 2026 ASSOCIATION MUTEMA • GABON
 </footer>
 
 <div class="modal" id="secModal">
   <div class="modal-box">
-    <h4 style="color:var(--gold)">CODE D'ACCÈS</h4>
+    <i class="fas fa-lock" style="font-size:30px; color:var(--gold); margin-bottom:10px"></i>
+    <h4 style="color:var(--gold); text-transform:uppercase; letter-spacing:1px">ZONE SÉCURISÉE</h4>
+    <p style="font-size:10px; color:var(--text-dim); margin-bottom:10px">Code COM ou PRESIDENT requis.</p>
     <input type="password" id="secKey" placeholder="Entrez votre code">
     <button class="btn btn-gold" onclick="checkKey()">Valider</button>
     <button class="btn" style="background:none; color:white" onclick="closeSec()">Annuler</button>
@@ -137,6 +198,19 @@ const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charo
 let db = { payments: [], mur: [], messages: [], projets: [] };
 let curAction = null;
 
+// --- ANIMATIONS JS ---
+function spawnFlower() {
+  const container = document.getElementById('flower-container');
+  const flower = document.createElement('i');
+  flower.className = 'fas fa-fan flower'; // Icône en forme de fleur/ventilateur
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.animationDuration = (Math.random() * 4 + 4) + "s"; // Entre 4 et 8 secondes
+  container.appendChild(flower);
+  setTimeout(() => flower.remove(), 8000); // Supprime après l'animation
+}
+setInterval(spawnFlower, 1000); // Une fleur toutes les secondes
+
+// --- NAVIGATION ---
 function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
@@ -145,7 +219,13 @@ function showTab(id, btn) {
   renderAll();
 }
 
-function openSec(act, btn) { curAction = {act, btn}; document.getElementById('secModal').classList.add('active'); }
+// --- SÉCURITÉ double code ---
+function openSec(act, btn) { 
+  curAction = {act, btn}; 
+  document.getElementById('secKey').value = ""; // Clear input
+  document.getElementById('secModal').classList.add('active'); 
+  document.getElementById('secKey').focus();
+}
 function closeSec() { document.getElementById('secModal').classList.remove('active'); }
 
 function checkKey() {
@@ -153,50 +233,48 @@ function checkKey() {
   const isCom = (k === "1604");
   const isPres = (k === "2026");
 
-  if((curAction.act === 'admin' && isCom) || (curAction.act === 'admin' && isPres)) {
-    unlockAdmin(); closeSec();
+  if((curAction.act === 'admin' && (isCom || isPres))) {
+    showTab('admin', curAction.btn); closeSec();
   } else if(curAction.act === 'mur' && isCom) {
     postToMur(); closeSec();
   } else if(curAction.act === 'projet' && (isCom || isPres)) {
     postToProjet(); closeSec();
   } else {
-    alert("Code incorrect pour cette action.");
+    alert("Code incorrect ou accès non autorisé pour ce grade.");
   }
 }
 
-function unlockAdmin() {
-  document.getElementById('adminArea').innerHTML = `
-    <div class="card">
-      <select id="aM">${MEMBERS.map(m=>`<option>${m}</option>`).join('')}</select>
-      <select id="aType">
-        <option value="noire">Caisse Noire</option>
-        <option value="epargne">Épargne</option>
-        <option value="deces">Décès</option>
-        <option value="solidarite">Mariage/Autres</option>
-      </select>
-      <select id="aMonth"><option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option><option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option><option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option></select>
-      <button class="btn btn-gold" onclick="addPay()">Enregistrer</button>
-    </div>`;
-  showTab('admin', curAction.btn);
-}
-
+// --- GESTION DES PAIEMENTS (AJOUT & SUPPRESSION) ---
 function addPay() {
-  db.payments.unshift({
+  const p = {
+    id: Date.now(), // ID unique pour la suppression
     name: document.getElementById('aM').value,
     type: document.getElementById('aType').value,
-    month: document.getElementById('aMonth').value
-  });
-  save(); alert("Enregistré !"); renderAll();
+    month: document.getElementById('aMonth').value,
+    dateEnreg: new Date().toLocaleDateString()
+  };
+  db.payments.unshift(p);
+  save(); renderAll();
+  alert(`Versement enregistré pour ${p.name} !`);
 }
 
+function deletePay(id) {
+  if(confirm("Voulez-vous vraiment supprimer ce paiement ? Cette action est irréversible.")) {
+    db.payments = db.payments.filter(p => p.id !== id);
+    save();
+    renderAll();
+  }
+}
+
+// --- AUTRES FONCTIONS ---
 function postToMur() {
-  const t = prompt("Votre annonce officielle :");
+  const t = prompt("Votre annonce officielle (Mur COM) :");
   if(t) { db.mur.unshift({text: t, date: new Date().toLocaleDateString()}); save(); renderAll(); }
 }
 
 function postToProjet() {
-  const t = prompt("Nom du projet :");
-  const d = prompt("Description rapide :");
+  const t = prompt("Nom du nouveau projet :");
+  const d = prompt("Description rapide du projet :");
   if(t) { db.projets.unshift({title: t, desc: d}); save(); renderAll(); }
 }
 
@@ -210,33 +288,54 @@ function calcF() {
   const min = parseInt(t.split(":")[0])*60 + parseInt(t.split(":")[1]);
   const diff = min - 870; // 14:30
   document.getElementById('fR').style.display = "block";
-  if(diff <= 0) { document.getElementById('fAmount').textContent = "0 FCFA"; }
+  if(diff <= 0) { document.getElementById('fAmount').textContent = "0 FCFA"; document.getElementById('fAmount').style.color="var(--emerald)"; }
   else {
     let f = 0, c = 500;
     for(let i=0; i<Math.ceil(diff/30); i++) { f+=c; c*=2; }
     document.getElementById('fAmount').textContent = f.toLocaleString() + " FCFA";
+    document.getElementById('fAmount').style.color="var(--red)";
   }
 }
 
+// --- RENDU GÉNÉRAL ---
 function renderAll() {
-  // Finances différenciées
+  // 1. Home : Cotisations différenciées
   document.getElementById('financeList').innerHTML = MEMBERS.map(m => {
     const p = db.payments.filter(x => x.name === m);
     return `<div class="card"><b>${m}</b><div class="mt-2">
       ${p.map(v => `<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}
     </div></div>`;
   }).join('');
-  // Projets
+
+  // 2. Projets
   document.getElementById('projectList').innerHTML = db.projets.map(p => `<div class="project-card"><h4>${p.title}</h4><p style="font-size:11px; opacity:0.7">${p.desc}</p></div>`).join('');
-  // Messages
+  
+  // 3. Messages libres
   document.getElementById('freeList').innerHTML = db.messages.map(m => `<div class="msg-bubble">${m.text} <br><small style="opacity:0.4">${m.time}</small></div>`).join('');
-  // Mur
+  
+  // 4. Mur officiel
   document.getElementById('murList').innerHTML = db.mur.map(m => `<div class="card" style="border-left:3px solid var(--gold)"><small>${m.date}</small><p>${m.text}</p></div>`).join('');
+
+  // 5. Admin : Liste de modification (Suppression)
+  document.getElementById('adminPayList').innerHTML = db.payments.map(p => `
+    <div class="card pay-edit-item">
+      <div>
+        <b>${p.name}</b> • <span class="badge badge-${p.type}">${p.type.toUpperCase()}</span> • ${p.month}<br>
+        <small style="opacity:0.3">Enreg. le ${p.dateEnreg}</small>
+      </div>
+      <button class="btn-del" onclick="deletePay(${p.id})" title="Supprimer ce paiement"><i class="fas fa-trash-alt"></i></button>
+    </div>
+  `).join('');
 }
 
-function save() { localStorage.setItem("mutema_db_v3", JSON.stringify(db)); }
+// --- STOCKAGE LOCAL ---
+function save() { localStorage.setItem("mutema_db_final", JSON.stringify(db)); }
 window.onload = () => {
-  const s = localStorage.getItem("mutema_db_v3");
+  // Populate select members
+  document.getElementById('aM').innerHTML = MEMBERS.map(m=>`<option>${m}</option>`).join('');
+  
+  // Load data
+  const s = localStorage.getItem("mutema_db_final");
   if(s) db = JSON.parse(s);
   renderAll();
 };
