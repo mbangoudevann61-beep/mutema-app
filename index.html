@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>MUTEMA — Firebase Live 2026</title>
+<title>MUTEMA LIVE 2026</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
@@ -20,7 +20,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 110px; overflow-x: hidden; }
 
-  /* ── HEADER ANIMÉ ── */
+  /* --- HEADER --- */
   .hero {
     position: relative; background: linear-gradient(180deg, var(--blue-deep) 0%, var(--bg) 100%);
     height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -30,22 +30,17 @@
   
   .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.1; animation: moveClouds linear infinite; z-index: 1; }
   .cloud1 { width: 100px; height: 40px; top: 20px; animation-duration: 25s; left:-120px; }
-  .cloud2 { width: 60px; height: 20px; top: 80px; animation-duration: 18s; opacity: 0.05; left:-100px; }
   @keyframes moveClouds { from { left: -120px; } to { left: 100%; } }
-
-  .flower { position: absolute; color: rgba(245, 200, 66, 0.1); animation: floatFlow 6s infinite linear; z-index: 2; }
-  @keyframes floatFlow { 0% { transform: translateY(180px) rotate(0deg); opacity:0; } 50% { opacity:1; } 100% { transform: translateY(-20px) rotate(360deg); opacity:0; } }
-
   .wave { position: absolute; bottom: 0; width: 200%; height: 40px; background: url('https://raw.githubusercontent.com/front-end-relative/waves-animation/master/wave.png'); background-size: 50% 40px; animation: wave-move 10s linear infinite; opacity: 0.2; z-index: 3; }
   @keyframes wave-move { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-  /* ── NAVIGATION ── */
+  /* --- NAVIGATION --- */
   nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000; background: #050c14; border-top: 1px solid var(--gold); display: flex; justify-content: space-around; padding: 12px 0; }
   .nav-btn { background: none; border: none; color: var(--text-dim); display: flex; flex-direction: column; align-items: center; font-size: 7px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
   .nav-btn i { font-size: 18px; margin-bottom: 4px; }
   .nav-btn.active { color: var(--gold); }
 
-  /* ── CONTENU ── */
+  /* --- CONTENU --- */
   .tab { display: none; padding: 15px; max-width: 500px; margin: 0 auto; animation: fadeIn 0.3s ease; }
   .tab.active { display: block; }
   @keyframes fadeIn { from{opacity:0} to{opacity:1} }
@@ -56,15 +51,13 @@
   .badge-noire { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid var(--gold); }
   .badge-epargne { background: rgba(16,217,143,0.15); color: var(--emerald); border: 1px solid var(--emerald); }
   .badge-deces { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid var(--red); }
-  .badge-solidarite { background: rgba(58,134,255,0.15); color: var(--blue); border: 1px solid var(--blue); }
-
-  /* ── MODAL ── */
+  
   .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
   .modal.active { display: flex; }
   .modal-box { background: var(--bg2); padding: 25px; border-radius: 15px; border: 1px solid var(--gold); width: 280px; text-align: center; }
   
-  input, select, textarea { width: 100%; padding: 10px; background: #050c14; border: 1px solid #333; color: white; border-radius: 5px; margin-top: 8px; font-size: 13px; }
-  .btn { width: 100%; padding: 12px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 10px; }
+  input, select { width: 100%; padding: 10px; background: #050c14; border: 1px solid #333; color: white; border-radius: 5px; margin-top: 8px; }
+  .btn { width: 100%; padding: 12px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; }
   .btn-gold { background: var(--gold); color: black; }
 </style>
 </head>
@@ -72,31 +65,16 @@
 
 <header class="hero">
   <div class="cloud cloud1"></div>
-  <div class="cloud cloud2"></div>
-  <div id="flower-zone"></div>
   <div class="logo-main">MUTEMA</div>
-  <div style="font-size:8px; color:var(--gold); letter-spacing:3px; z-index:10; font-weight:bold">RIGUEUR • DISCIPLINE • ENTRAIDE</div>
+  <div style="font-size:8px; color:var(--gold); letter-spacing:3px; font-weight:bold">RIGUEUR • DISCIPLINE • ENTRAIDE</div>
   <div class="wave"></div>
 </header>
 
 <main>
   <div class="tab active" id="tab-home">
-    <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations (LIVE)</div>
+    <div class="sec-title"><i class="fas fa-wallet"></i> État des Cotisations</div>
     <div id="statusText" style="font-size:10px; color:var(--emerald); margin-bottom:10px">Connexion Firebase...</div>
     <div id="financeList"></div>
-  </div>
-
-  <div class="tab" id="tab-projets">
-    <div class="sec-title"><i class="fas fa-tasks"></i> Projets</div>
-    <div id="projectList"></div>
-    <button class="btn btn-gold" onclick="openSec('projet')">Nouveau Projet</button>
-  </div>
-
-  <div class="tab" id="tab-messages">
-    <div class="sec-title"><i class="fas fa-comments"></i> Discussion</div>
-    <textarea id="freeInput" placeholder="Message aux membres..."></textarea>
-    <button class="btn btn-gold" style="background:var(--blue); color:white" onclick="postFree()">Envoyer</button>
-    <div id="freeList" style="margin-top:15px"></div>
   </div>
 
   <div class="tab" id="tab-admin">
@@ -107,7 +85,6 @@
           <option value="noire">Caisse Noire</option>
           <option value="epargne">Épargne</option>
           <option value="deces">Décès</option>
-          <option value="solidarite">Solidarité</option>
         </select>
         <select id="aMonth"><option>Janvier</option><option>Février</option><option>Mars</option><option>Avril</option><option>Mai</option><option>Juin</option><option>Juillet</option><option>Août</option><option>Septembre</option><option>Octobre</option><option>Novembre</option><option>Décembre</option></select>
         <button class="btn btn-gold" onclick="addPay()">Valider le versement</button>
@@ -118,14 +95,8 @@
 
 <nav>
   <button class="nav-btn active" onclick="showTab('home', this)"><i class="fas fa-home"></i><span>Home</span></button>
-  <button class="nav-btn" onclick="showTab('projets', this)"><i class="fas fa-project-diagram"></i><span>Projet</span></button>
-  <button class="nav-btn" onclick="showTab('messages', this)"><i class="fas fa-comment-dots"></i><span>Message</span></button>
   <button class="nav-btn" onclick="openSec('admin', this)"><i class="fas fa-user-shield"></i><span>Gestion</span></button>
 </nav>
-
-<footer style="text-align:center; padding:10px; font-size:10px; opacity:0.3">
-  © 2026 ASSOCIATION MUTEMA • Firebase Realtime
-</footer>
 
 <div class="modal" id="secModal">
   <div class="modal-box">
@@ -137,7 +108,7 @@
 </div>
 
 <script>
-// --- CONFIGURATION FIREBASE (TES CLÉS) ---
+// --- TES CLÉS FIREBASE ---
 const firebaseConfig = {
     apiKey: "AIzaSyCSDJym8wBdLKwo2mRQL2LvJUAKZgSEZRg",
     authDomain: "mutema-app.firebaseapp.com",
@@ -145,41 +116,27 @@ const firebaseConfig = {
     storageBucket: "mutema-app.firebasestorage.app",
     messagingSenderId: "651266231790",
     appId: "1:651266231790:web:0df29e38760248b88d12ff",
-    databaseURL: "https://mutema-app-default-rtdb.firebaseio.com" // Vérifie cette URL dans l'onglet Realtime Database
+    databaseURL: "https://mutema-app-default-rtdb.firebaseio.com" // C'est cette ligne qui manquait !
 };
 
-// Initialisation
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 const MEMBERS = ["Kamara", "Bermine", "Caprisse Auderey", "Devann", "Carol Charonne", "Achille", "Syntiche Promesse", "Aurnelia", "Alicia Carolle", "Carmela", "Jolene", "Éric Didier"];
 let curAction = null;
 
-// --- ÉCOUTEUR FIREBASE (TEMPS RÉEL) ---
+// --- ECOUTEUR LIVE ---
 database.ref('mutema_data').on('value', (snapshot) => {
-    const data = snapshot.val() || { payments: {}, projects: {}, messages: {} };
+    const data = snapshot.val() || { payments: {} };
     renderAll(data);
     document.getElementById('statusText').textContent = "✅ Connecté (Live)";
 }, (error) => {
-    document.getElementById('statusText').textContent = "❌ Erreur de connexion";
+    document.getElementById('statusText').textContent = "❌ Erreur : Vérifiez les règles Firebase";
 });
 
-// --- ANIMATIONS ---
-function spawnF() {
-  const f = document.createElement('i');
-  f.className = 'fas fa-fan flower';
-  f.style.cssText = `position:absolute;left:${Math.random()*100}vw;color:rgba(245,200,66,0.1);animation:floatFlow 6s linear;bottom:0;z-index:2;`;
-  document.getElementById('flower-zone').appendChild(f);
-  setTimeout(() => f.remove(), 6000);
-}
-setInterval(spawnF, 2000);
-
-// --- LOGIQUE APP ---
 function showTab(id, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  if(btn) btn.classList.add('active');
 }
 
 function openSec(act, btn) { curAction = {act, btn}; document.getElementById('secModal').classList.add('active'); }
@@ -189,12 +146,8 @@ function checkKey() {
   const k = document.getElementById('secKey').value;
   if(k === "1604" || k === "2026") {
     closeSec();
-    if(curAction.act === 'admin') showTab('admin', curAction.btn);
-    if(curAction.act === 'projet') { 
-        const t = prompt("Titre du projet :"); 
-        if(t) database.ref('mutema_data/projects').push({title: t});
-    }
-  } else { alert("Code erroné."); }
+    showTab('admin', curAction.btn);
+  } else { alert("Accès refusé."); }
 }
 
 function addPay() {
@@ -208,37 +161,17 @@ function addPay() {
 }
 
 function deletePay(id) {
-  if(confirm("Supprimer ce versement ?")) {
-      database.ref('mutema_data/payments/' + id).remove();
-  }
-}
-
-function postFree() {
-  const v = document.getElementById('freeInput').value;
-  if(v) {
-      database.ref('mutema_data/messages').push({text: v, time: new Date().toLocaleTimeString()});
-      document.getElementById('freeInput').value = "";
-  }
+  if(confirm("Supprimer ?")) database.ref('mutema_data/payments/' + id).remove();
 }
 
 function renderAll(data) {
   const pays = data.payments ? Object.entries(data.payments) : [];
-  const projs = data.projects ? Object.values(data.projects) : [];
-  const msgs = data.messages ? Object.values(data.messages) : [];
-
-  // Home
+  
   document.getElementById('financeList').innerHTML = MEMBERS.map(m => {
     const p = pays.filter(([id, v]) => v.name === m);
     return `<div class="card"><b>${m}</b><br>${p.map(([id, v])=>`<span class="badge badge-${v.type}">${v.month.substring(0,3)} • ${v.type.toUpperCase()}</span>`).join('')}</div>`;
   }).join('');
   
-  // Messages
-  document.getElementById('freeList').innerHTML = msgs.reverse().map(m => `<div style="background:#1a2a3a; padding:10px; border-radius:10px; margin-bottom:5px; font-size:12px; border-left:3px solid var(--blue)">${m.text}</div>`).join('');
-  
-  // Projets
-  document.getElementById('projectList').innerHTML = projs.map(p => `<div class="card">🚀 ${p.title}</div>`).join('');
-
-  // Admin
   document.getElementById('adminPayList').innerHTML = pays.map(([id, v]) => `
     <div class="card" style="display:flex; justify-content:space-between; font-size:11px">
       <span>${v.name} (${v.month})</span>
